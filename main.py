@@ -131,8 +131,13 @@ def add():
             "url": f"{url}/static/tweets/{tweet_id}.png",
         }
     else:
+        if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+            ip = request.environ['REMOTE_ADDR']
+        else:
+            ip = request.environ['HTTP_X_FORWARDED_FOR']
+
         hook.send(
-            f"{request.remote_addr} made image for https://twitter.com/i/status/{tweet_id}")
+            f"{ip} made image for https://twitter.com/i/status/{tweet_id}")
         return download_images(tweet_id)
 
 
