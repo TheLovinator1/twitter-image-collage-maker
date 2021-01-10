@@ -1,0 +1,22 @@
+version: "3"
+services:
+  twitter-image-collage-maker:
+    #image: thelovinator/twitter-image-collage-maker
+    build: .
+    env_file:
+      - .env
+    container_name: twitter-image-collage-maker
+    environment:
+      - CONSUMER_KEY=${CONSUMER_KEY}
+      - CONSUMER_SECRET=${CONSUMER_SECRET}
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - URL=${URL}
+      - WEBHOOK_URL=${WEBHOOK_URL}
+    ports:
+      - "5000:5000"
+    volumes:
+      - tweet_images:/home/botuser/static/tweets
+    restart: unless-stopped
+volumes:
+  tweet_images:
