@@ -12,6 +12,7 @@ services:
       - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
       - URL=${URL}
       - WEBHOOK_URL=${WEBHOOK_URL}
+      - DISABLE_IP=${DISABLE_IP}
     ports:
       - "5000:5000"
     volumes:
