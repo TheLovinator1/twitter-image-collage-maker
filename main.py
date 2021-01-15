@@ -4,7 +4,7 @@ import requests
 import tweepy
 from dhooks import Webhook
 from dotenv import load_dotenv
-from flask import Flask, escape, render_template, request
+from flask import Flask, render_template, request
 from PIL import Image, ImageOps
 
 app = Flask(__name__)
@@ -58,7 +58,7 @@ def download_images(tweet_id: int):
     """
 
     try:
-        tweet = api.get_status(tweet_id)
+        tweet = api.get_status(tweet_id, tweet_mode="extended")
     except tweepy.error.TweepError as e:
         return f"Tweepy Error: {e}."
     except Exception as e:
@@ -155,7 +155,7 @@ def add():
 
 @ app.route('/')
 def index():
-    """ Render index.html. This is our home page. """
+    """ Renders /templates/index.html """
     return render_template('index.html')
 
 
