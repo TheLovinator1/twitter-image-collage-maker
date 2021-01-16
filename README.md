@@ -3,6 +3,25 @@
 `twitter-image-collage-maker` combines several images in tweets into one.
 It runs a website that downloads images, combines them into a 2x1, 3x1 and 2x2 and returns the new combined image. This program was made for https://github.com/TheLovinator1/discord-twitter-webhooks.
 
+---
+
+### Before
+<img alt="Before1" src="static\img\EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
+<img alt="Before2" src="static\img\EJ7n4pfU4AARDwj.jpg" width="15%" height="15%">
+<img alt="Before3" src="static\img\EJ7n4pfVUAA9kHQ.jpg" width="15%" height="15%">
+<img alt="Before4" src="static\img\EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
+
+---
+
+### After
+<img alt="Before1" src="static\img\1197649654785069057.png" width="15%" height="15%">
+
+---
+
+## Public version
+
+https://twitter.lovinator.space/
+
 ## Installation
 
 *(click to expand the sections below for full setup instructions)*
