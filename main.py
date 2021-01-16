@@ -49,6 +49,18 @@ def cleanup():
             app.logger.debug(f"Cleaned up static/tweets/{i}.png")
 
 
+def notify_discord(message: str):
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        ip = request.environ['REMOTE_ADDR']
+    else:
+        ip = request.environ['HTTP_X_FORWARDED_FOR']
+
+    if hidden_ip == "False":
+        hook.send(f"{ip} {message}")
+    else:
+        hook.send(f"Someone {message}")
+
+
 def download_images(tweet_id: int):
     """This function downloads images from Twitter and makes them into one image with Pillow.
 
@@ -60,66 +72,74 @@ def download_images(tweet_id: int):
     try:
         tweet = api.get_status(tweet_id, tweet_mode="extended")
     except tweepy.error.TweepError as e:
+        notify_discord(
+            f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
         return f"Tweepy Error: {e}."
     except Exception as e:
+        notify_discord(
+            f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
         return f"Error: {e}. If the error persists " \
-            "please contact https://github.com/TheLovinator1/twitter-image-downloader"
+            "please contact https://github.com/TheLovinator1/twitter-image-collage-maker"
+    try:
+        links = link_list(tweet)
+        new_image_name = f"static/tweets/{tweet_id}.png"
+        x_offset = 0
 
-    links = link_list(tweet)
-    new_image_name = f"static/tweets/{tweet_id}.png"
-    x_offset = 0
+        for itr, link in enumerate(links, start=1):
+            response = requests.get(link)
+            with open(f"static/tweets/{itr}.jpg", "wb") as file:
+                file.write(response.content)
 
-    for itr, link in enumerate(links, start=1):
-        response = requests.get(link)
-        with open(f"static/tweets/{itr}.jpg", "wb") as file:
-            file.write(response.content)
+            thumb = ImageOps.fit(
+                Image.open(
+                    f"static/tweets/{itr}.jpg"), (512, 512), Image.ANTIALIAS
+            )
+            thumb.save(f"static/tweets/{itr}.png")
+            os.remove(f"static/tweets/{itr}.jpg")
 
-        thumb = ImageOps.fit(
-            Image.open(f"static/tweets/{itr}.jpg"), (512, 512), Image.ANTIALIAS
-        )
-        thumb.save(f"static/tweets/{itr}.png")
-        os.remove(f"static/tweets/{itr}.jpg")
+        if len(links) == 1:
+            image_url = tweet.extended_entities['media'][0]['media_url_https'].replace(
+                ".png", "?format=png&name=orig").replace(".jpg", "?format=jpg&name=orig")  # Get better quality
 
-    if len(links) == 1:
-        image_url = tweet.extended_entities['media'][0]['media_url_https'].replace(
-            ".png", "?format=png&name=orig").replace(".jpg", "?format=jpg&name=orig")  # Get better quality
+            return {
+                "url": image_url,
+            }
 
+        if len(links) == 2:
+            imgs = list(map(Image.open, (image1, image2)))
+            new_im = Image.new("RGB", (1024, 512))
+
+            for img in imgs:
+                new_im.paste(img, (x_offset, 0))
+                x_offset += img.size[0]
+            new_im.save(new_image_name)
+
+        if len(links) == 3:
+            imgs = list(map(Image.open, (image1, image2, image3)))
+            new_im = Image.new("RGB", (1536, 512))
+
+            for img in imgs:
+                new_im.paste(img, (x_offset, 0))
+                x_offset += img.size[0]
+            new_im.save(new_image_name)
+
+        if len(links) == 4:
+            imgs = list(map(Image.open, (image1, image2, image3, image4)))
+            new_im = Image.new("RGB", (1024, 1024))
+
+            new_im.paste(imgs[0], (0, 0))
+            new_im.paste(imgs[1], (512, 0))
+            new_im.paste(imgs[2], (0, 512))
+            new_im.paste(imgs[3], (512, 512))
+            new_im.save(new_image_name)
+
+        cleanup()
         return {
-            "url": image_url,
+            "url": f"{url}/static/tweets/{tweet_id}.png",
         }
-
-    if len(links) == 2:
-        imgs = list(map(Image.open, (image1, image2)))
-        new_im = Image.new("RGB", (1024, 512))
-
-        for img in imgs:
-            new_im.paste(img, (x_offset, 0))
-            x_offset += img.size[0]
-        new_im.save(new_image_name)
-
-    if len(links) == 3:
-        imgs = list(map(Image.open, (image1, image2, image3)))
-        new_im = Image.new("RGB", (1536, 512))
-
-        for img in imgs:
-            new_im.paste(img, (x_offset, 0))
-            x_offset += img.size[0]
-        new_im.save(new_image_name)
-
-    if len(links) == 4:
-        imgs = list(map(Image.open, (image1, image2, image3, image4)))
-        new_im = Image.new("RGB", (1024, 1024))
-
-        new_im.paste(imgs[0], (0, 0))
-        new_im.paste(imgs[1], (512, 0))
-        new_im.paste(imgs[2], (0, 512))
-        new_im.paste(imgs[3], (512, 512))
-        new_im.save(new_image_name)
-
-    cleanup()
-    return {
-        "url": f"{url}/static/tweets/{tweet_id}.png",
-    }
+    except Exception as e:
+        notify_discord(
+            f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
 
 
 @ app.route("/add")
@@ -139,18 +159,8 @@ def add():
         return {
             "url": f"{url}/static/tweets/{tweet_id}.png",
         }
-    else:
-        if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-            ip = request.environ['REMOTE_ADDR']
-        else:
-            ip = request.environ['HTTP_X_FORWARDED_FOR']
-        if hidden_ip == "False":
-            hook.send(
-                f"{ip} made image for https://twitter.com/i/status/{tweet_id}")
-        else:
-            hook.send(
-                f"New image for https://twitter.com/i/status/{tweet_id}")
-        return download_images(tweet_id)
+    notify_discord(f"made image for https://twitter.com/i/status/{tweet_id}")
+    return download_images(tweet_id)
 
 
 @ app.route('/')
