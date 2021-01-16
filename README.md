@@ -6,15 +6,19 @@ It runs a website that downloads images, combines them into a 2x1, 3x1 and 2x2 a
 ---
 
 ### Before
+
+
+<p float="left">
 <img alt="Before1" src="static\img\EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
 <img alt="Before2" src="static\img\EJ7n4pfU4AARDwj.jpg" width="15%" height="15%">
 <img alt="Before3" src="static\img\EJ7n4pfVUAA9kHQ.jpg" width="15%" height="15%">
 <img alt="Before4" src="static\img\EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
+</p>
 
 ---
 
 ### After
-<img alt="Before1" src="static\img\1197649654785069057.png" width="15%" height="15%">
+<img alt="After1" src="static\img\1197649654785069057.png" width="15%" height="15%">
 
 ---
 
