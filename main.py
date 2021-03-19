@@ -16,11 +16,9 @@ url = os.environ["URL"]
 # TODO: Change this to actual boolean instead of a string that is True or False lol
 hidden_ip = os.getenv("DISABLE_IP", default="True")
 
-auth = tweepy.OAuthHandler(
-    os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
+auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
 
-auth.set_access_token(
-    os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRET"])
+auth.set_access_token(os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRET"])
 
 api = tweepy.API(auth)
 
@@ -42,7 +40,7 @@ def link_list(tweet):
 
 
 def cleanup():
-    """Cleans up old images."""
+    """Clean up old images."""
     for i in range(1, 4):
         if os.path.isfile(f"static/tweets/{i}.png"):
             os.remove(f"static/tweets/{i}.png")
@@ -50,10 +48,10 @@ def cleanup():
 
 
 def notify_discord(message: str):
-    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        ip = request.environ['REMOTE_ADDR']
+    if request.environ.get("HTTP_X_FORWARDED_FOR") is None:
+        ip = request.environ["REMOTE_ADDR"]
     else:
-        ip = request.environ['HTTP_X_FORWARDED_FOR']
+        ip = request.environ["HTTP_X_FORWARDED_FOR"]
 
     if hidden_ip == "False":
         hook.send(f"{ip} {message}")
@@ -62,24 +60,26 @@ def notify_discord(message: str):
 
 
 def download_images(tweet_id: int):
-    """This function downloads images from Twitter and makes them into one image with Pillow.
+    """
+    Downloads images from Twitter and makes them into one image with Pillow.
 
     tweet_id is snowflake ID for tweet.
 
-    Returns json with url for our created image. If tweet only has one image we send that instead of creating our own.
+    Returns json with url for our created image. If tweet only has one image we
+    send that instead of creating our own.
     """
 
     try:
         tweet = api.get_status(tweet_id, tweet_mode="extended")
     except tweepy.error.TweepError as e:
-        notify_discord(
-            f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
+        notify_discord(f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
         return f"Tweepy Error: {e}."
     except Exception as e:
-        notify_discord(
-            f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
-        return f"Error: {e}. If the error persists " \
-            "please contact https://github.com/TheLovinator1/twitter-image-collage-maker"
+        notify_discord(f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
+        return (
+            f"Error: {e}. If the error persists please contact "
+            "https://github.com/TheLovinator1/twitter-image-collage-maker"
+        )
     try:
         links = link_list(tweet)
         new_image_name = f"static/tweets/{tweet_id}.png"
@@ -91,15 +91,17 @@ def download_images(tweet_id: int):
                 file.write(response.content)
 
             thumb = ImageOps.fit(
-                Image.open(
-                    f"static/tweets/{itr}.jpg"), (512, 512), Image.ANTIALIAS
+                Image.open(f"static/tweets/{itr}.jpg"), (512, 512), Image.ANTIALIAS
             )
             thumb.save(f"static/tweets/{itr}.png")
             os.remove(f"static/tweets/{itr}.jpg")
 
         if len(links) == 1:
-            image_url = tweet.extended_entities['media'][0]['media_url_https'].replace(
-                ".png", "?format=png&name=orig").replace(".jpg", "?format=jpg&name=orig")  # Get better quality
+            image_url = (
+                tweet.extended_entities["media"][0]["media_url_https"]
+                .replace(".png", "?format=png&name=orig")
+                .replace(".jpg", "?format=jpg&name=orig")
+            )  # Get better quality
 
             return {
                 "url": image_url,
@@ -138,21 +140,23 @@ def download_images(tweet_id: int):
             "url": f"{url}/static/tweets/{tweet_id}.png",
         }
     except Exception as e:
-        notify_discord(
-            f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
+        notify_discord(f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
 
 
-@ app.route("/add")
+@app.route("/add")
 def add():
-    """ The page where we add tweets that will be downloaded.
+    """The page where we add tweets that will be downloaded.
     /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
 
-    Returns string with URL to the image. """
+    Returns string with URL to the image."""
 
-    tweet_id = request.args.get('tweet_id', default=1, type=int)
+    tweet_id = request.args.get("tweet_id", default=1, type=int)
     print(f"Add: Tweet ID: {tweet_id}")
     if tweet_id == 1:
-        return "Please add correct tweet id, e.g https://twitter.lovinator.space/add?tweet_id=1197649654785069057"
+        return (
+            "Please add correct tweet id, e.g "
+            "https://twitter.lovinator.space/add?tweet_id=1197649654785069057"
+        )
 
     if os.path.isfile(f"static/tweets/{tweet_id}.png"):
         print(f"{tweet_id} is already converted.")
@@ -163,10 +167,10 @@ def add():
     return download_images(tweet_id)
 
 
-@ app.route('/')
+@app.route("/")
 def index():
     """ Renders /templates/index.html """
-    return render_template('index.html')
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
