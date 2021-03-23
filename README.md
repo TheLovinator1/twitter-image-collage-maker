@@ -51,6 +51,7 @@ services:
       - URL=${URL}
       - WEBHOOK_URL=${WEBHOOK_URL}
       - DISABLE_IP=${DISABLE_IP}
+      - DISCORD_ID=${DISCORD_ID}
     ports:
       - "5000:5000"
     volumes:
@@ -85,6 +86,10 @@ Hide IP in webhook notification
 
 * DISABLE_IP=True
 
+The Discord id that should be pinged when something goes wrong. It can be found by typing \@YourUsername in Discord.
+
+* DISCORD_ID=126462229892694018
+
 </details>
 <details>
 <summary><b>Get twitter-image-collage-maker with <code>docker cli</code></b></summary><br/><br/>
@@ -99,6 +104,7 @@ docker run -d \
   -e ACCESS_TOKEN_SECRET=VlHAS12FYqkQdASFd5XvyunwPaS12F8zPMTZ6IZASF1No \
   -e URL=https://twitter.lovinator.space/ \
   -e DISABLE_IP=True \
+  -e DISCORD_ID=126462229892694018 \
   --restart unless-stopped \
   thelovinator/twitter-image-collage-maker
 ```
@@ -127,6 +133,10 @@ Domain for website. Discord needs to access this.
 Hide IP in webhook notification
 
 * DISABLE_IP=True
+
+The Discord id that should be pinged when something goes wrong. It can be found by typing \@YourUsername in Discord.
+
+* DISCORD_ID=126462229892694018
 
 </details>
 <details>
@@ -167,6 +177,10 @@ Domain for website. Discord needs to access this.
 Hide IP in webhook notification
 
 * DISABLE_IP=True
+
+The Discord id that should be pinged when something goes wrong. It can be found by typing \@YourUsername in Discord.
+
+* DISCORD_ID=126462229892694018
 
 </details>
 

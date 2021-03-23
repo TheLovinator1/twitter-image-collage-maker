@@ -15,6 +15,7 @@ url = os.environ["URL"]
 
 # TODO: Change this to actual boolean instead of a string that is True or False lol
 hidden_ip = os.getenv("DISABLE_IP", default="True")
+discord_username = os.getenv("DISCORD_ID", default="126462229892694018")
 
 auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
 
@@ -41,7 +42,8 @@ def link_list(tweet):
 
 def cleanup():
     """Clean up old images."""
-    for i in range(1, 4):
+    for i in range(1, 5):
+        app.logger.debug(f"Removing {i}.png")
         if os.path.isfile(f"static/tweets/{i}.png"):
             os.remove(f"static/tweets/{i}.png")
             app.logger.debug(f"Cleaned up static/tweets/{i}.png")
@@ -72,10 +74,16 @@ def download_images(tweet_id: int):
     try:
         tweet = api.get_status(tweet_id, tweet_mode="extended")
     except tweepy.error.TweepError as e:
-        notify_discord(f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
+        notify_discord(
+            f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
+            f"<@{discord_username}>"
+        )
         return f"Tweepy Error: {e}."
     except Exception as e:
-        notify_discord(f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
+        notify_discord(
+            f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
+            f"<@{discord_username}>"
+        )
         return (
             f"Error: {e}. If the error persists please contact "
             "https://github.com/TheLovinator1/twitter-image-collage-maker"
@@ -135,12 +143,16 @@ def download_images(tweet_id: int):
             new_im.paste(imgs[3], (512, 512))
             new_im.save(new_image_name)
 
-        cleanup()
         return {
             "url": f"{url}/static/tweets/{tweet_id}.png",
         }
     except Exception as e:
-        notify_discord(f"errored for https://twitter.com/i/status/{tweet_id}\n{e}")
+        notify_discord(
+            f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
+            f"<@{discord_username}>"
+        )
+    finally:
+        cleanup()
 
 
 @app.route("/add")
