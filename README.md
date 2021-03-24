@@ -86,7 +86,7 @@ Hide IP in webhook notification
 
 * DISABLE_IP=True
 
-The Discord id that should be pinged when something goes wrong. It can be found by typing \@YourUsername in Discord.
+The Discord id that should be pinged when something goes wrong. It can be found by typing \\@YourUsername in Discord.
 
 * DISCORD_ID=126462229892694018
 
@@ -134,7 +134,7 @@ Hide IP in webhook notification
 
 * DISABLE_IP=True
 
-The Discord id that should be pinged when something goes wrong. It can be found by typing \@YourUsername in Discord.
+The Discord id that should be pinged when something goes wrong. It can be found by typing \\@YourUsername in Discord.
 
 * DISCORD_ID=126462229892694018
 
@@ -178,7 +178,7 @@ Hide IP in webhook notification
 
 * DISABLE_IP=True
 
-The Discord id that should be pinged when something goes wrong. It can be found by typing \@YourUsername in Discord.
+The Discord id that should be pinged when something goes wrong. It can be found by typing \\@YourUsername in Discord.
 
 * DISCORD_ID=126462229892694018
 
