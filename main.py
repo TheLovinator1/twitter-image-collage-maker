@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import requests
 import tweepy
@@ -23,11 +24,6 @@ auth.set_access_token(os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRE
 
 api = tweepy.API(auth)
 
-image1 = "static/tweets/1.png"
-image2 = "static/tweets/2.png"
-image3 = "static/tweets/3.png"
-image4 = "static/tweets/4.png"
-
 
 def link_list(tweet):
     """Generate a list with all the images in the tweet."""
@@ -40,15 +36,6 @@ def link_list(tweet):
     return link_list
 
 
-def cleanup():
-    """Clean up old images."""
-    for i in range(1, 5):
-        app.logger.debug(f"Removing {i}.png")
-        if os.path.isfile(f"static/tweets/{i}.png"):
-            os.remove(f"static/tweets/{i}.png")
-            app.logger.debug(f"Cleaned up static/tweets/{i}.png")
-
-
 def notify_discord(message: str):
     if request.environ.get("HTTP_X_FORWARDED_FOR") is None:
         ip = request.environ["REMOTE_ADDR"]
@@ -57,6 +44,7 @@ def notify_discord(message: str):
 
     if hidden_ip == "False":
         hook.send(f"{ip} {message}")
+        hook.send(f"{ip} - {message}")
     else:
         hook.send(f"Someone {message}")
 
@@ -70,41 +58,33 @@ def download_images(tweet_id: int):
     Returns json with url for our created image. If tweet only has one image we
     send that instead of creating our own.
     """
-
     try:
+        images = []
         tweet = api.get_status(tweet_id, tweet_mode="extended")
-    except tweepy.error.TweepError as e:
-        notify_discord(
-            f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
-            f"<@{discord_username}>"
-        )
-        return f"Tweepy Error: {e}."
-    except Exception as e:
-        notify_discord(
-            f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
-            f"<@{discord_username}>"
-        )
-        return (
-            f"Error: {e}. If the error persists please contact "
-            "https://github.com/TheLovinator1/twitter-image-collage-maker"
-        )
-    try:
-        links = link_list(tweet)
-        new_image_name = f"static/tweets/{tweet_id}.png"
+        links = link_list(tweet)  # Generates a list with all the images in the tweet.
         x_offset = 0
 
-        for itr, link in enumerate(links, start=1):
-            response = requests.get(link)
-            with open(f"static/tweets/{itr}.jpg", "wb") as file:
-                file.write(response.content)
+        for link in links:
+            with tempfile.SpooledTemporaryFile() as tmp:
+                print("Trying to downloand " + link)
+                response = requests.get(link)
+                tmp.write(response.content)
 
-            thumb = ImageOps.fit(
-                Image.open(f"static/tweets/{itr}.jpg"), (512, 512), Image.ANTIALIAS
-            )
-            thumb.save(f"static/tweets/{itr}.png")
-            os.remove(f"static/tweets/{itr}.jpg")
+                # Crop to 512 by 512 pixels
+                thumb = ImageOps.fit(Image.open(tmp), (512, 512), Image.ANTIALIAS)
+
+                # Create temp file to store the cropped image, we remove it manually later
+                filename = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+
+                # Save the crop
+                thumb.save(filename)
+                print("Saved " + filename.name)
+
+                # Add the path to list so we can combine them later
+                images.append(str(filename.name))
 
         if len(links) == 1:
+            print("Found 1 link")
             image_url = (
                 tweet.extended_entities["media"][0]["media_url_https"]
                 .replace(".png", "?format=png&name=orig")
@@ -116,51 +96,60 @@ def download_images(tweet_id: int):
             }
 
         if len(links) == 2:
-            imgs = list(map(Image.open, (image1, image2)))
+            print("Found 2 links")
+            imgs = list(map(Image.open, (images[0], images[1])))
             new_im = Image.new("RGB", (1024, 512))
 
             for img in imgs:
                 new_im.paste(img, (x_offset, 0))
                 x_offset += img.size[0]
-            new_im.save(new_image_name)
 
         if len(links) == 3:
-            imgs = list(map(Image.open, (image1, image2, image3)))
+            print("Found 3 links")
+            imgs = list(map(Image.open, (images[0], images[1], images[2])))
             new_im = Image.new("RGB", (1536, 512))
 
             for img in imgs:
                 new_im.paste(img, (x_offset, 0))
                 x_offset += img.size[0]
-            new_im.save(new_image_name)
 
         if len(links) == 4:
-            imgs = list(map(Image.open, (image1, image2, image3, image4)))
+            print("Found 4 links")
+            imgs = list(map(Image.open, (images[0], images[1], images[2], images[3])))
             new_im = Image.new("RGB", (1024, 1024))
 
             new_im.paste(imgs[0], (0, 0))
             new_im.paste(imgs[1], (512, 0))
             new_im.paste(imgs[2], (0, 512))
             new_im.paste(imgs[3], (512, 512))
-            new_im.save(new_image_name)
 
+        # Save our merged image
+        new_im.save(f"static/tweets/{tweet_id}.png")
+        print(f"Saved merged image for {tweet_id}")
         return {
             "url": f"{url}/static/tweets/{tweet_id}.png",
         }
     except Exception as e:
+        print("Error: " + str(e))
         notify_discord(
             f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
             f"<@{discord_username}>"
         )
     finally:
-        cleanup()
+        filename.close()
+        for image in images:
+            print(f"Removing {image}")
+            os.remove(str(image))
 
 
 @app.route("/add")
 def add():
-    """The page where we add tweets that will be downloaded.
-    /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
+    """
+    The page where we add tweets that will be downloaded.
+    Example: /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
 
-    Returns string with URL to the image."""
+    Returns string with URL to the image.
+    """
 
     tweet_id = request.args.get("tweet_id", default=1, type=int)
     print(f"Add: Tweet ID: {tweet_id}")
@@ -181,7 +170,7 @@ def add():
 
 @app.route("/")
 def index():
-    """ Renders /templates/index.html """
+    """Renders /templates/index.html"""
     return render_template("index.html")
 
 
