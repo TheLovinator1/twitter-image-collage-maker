@@ -44,7 +44,6 @@ def notify_discord(message: str):
 
     if hidden_ip == "False":
         hook.send(f"{ip} {message}")
-        hook.send(f"{ip} - {message}")
     else:
         hook.send(f"Someone {message}")
 
