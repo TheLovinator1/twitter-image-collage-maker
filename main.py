@@ -65,7 +65,7 @@ def download_images(tweet_id: int):
 
         for link in links:
             with tempfile.SpooledTemporaryFile() as tmp:
-                print("Trying to downloand " + link)
+                print("Trying to download " + link)
                 response = requests.get(link)
                 tmp.write(response.content)
 
