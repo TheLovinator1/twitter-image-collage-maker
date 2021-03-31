@@ -77,7 +77,7 @@ def download_images(tweet_id: int):
 
                 # Save the crop
                 thumb.save(filename)
-                print("Saved " + filename.name)
+                print(f"Saved {filename.name} ({link})")
 
                 # Add the path to list so we can combine them later
                 images.append(str(filename.name))
@@ -124,7 +124,7 @@ def download_images(tweet_id: int):
 
         # Save our merged image
         new_im.save(f"static/tweets/{tweet_id}.png")
-        print(f"Saved merged image for {tweet_id}")
+        print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
         return {
             "url": f"{url}/static/tweets/{tweet_id}.png",
         }
