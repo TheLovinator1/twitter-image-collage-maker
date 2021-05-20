@@ -5,7 +5,7 @@ import requests
 import tweepy
 from dhooks import Webhook
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
+from flask import Flask, escape, render_template, request
 from PIL import Image, ImageOps
 
 app = Flask(__name__)
@@ -151,6 +151,8 @@ def add():
     """
 
     tweet_id = request.args.get("tweet_id", default=1, type=int)
+    escaped_tweet_id = escape(tweet_id)
+
     print(f"Add: Tweet ID: {tweet_id}")
     if tweet_id == 1:
         return (
@@ -158,13 +160,13 @@ def add():
             "https://twitter.lovinator.space/add?tweet_id=1197649654785069057"
         )
 
-    if os.path.isfile(f"static/tweets/{tweet_id}.png"):
-        print(f"{tweet_id} is already converted.")
+    if os.path.isfile(f"static/tweets/{escaped_tweet_id}.png"):
+        print(f"{escaped_tweet_id} is already converted.")
         return {
-            "url": f"{url}/static/tweets/{tweet_id}.png",
+            "url": f"{url}/static/tweets/{escaped_tweet_id}.png",
         }
-    notify_discord(f"made image for https://twitter.com/i/status/{tweet_id}")
-    return download_images(tweet_id)
+    notify_discord(f"made image for https://twitter.com/i/status/{escaped_tweet_id}")
+    return download_images(escaped_tweet_id)
 
 
 @app.route("/")
