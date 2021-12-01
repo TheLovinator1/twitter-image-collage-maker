@@ -13,6 +13,7 @@ load_dotenv(verbose=True)
 
 hook = Webhook(os.environ["WEBHOOK_URL"])
 url = os.environ["URL"]
+static_location = os.getenv("STATIC_LOCATION", default="static")
 
 # TODO: Change this to actual boolean instead of a string that is True or False lol
 hidden_ip = os.getenv("DISABLE_IP", default="True")
@@ -123,7 +124,7 @@ def download_images(tweet_id: int):
             new_im.paste(imgs[3], (512, 512))
 
         # Save our merged image
-        new_im.save(f"static/tweets/{tweet_id}.png")
+        new_im.save(f"{static_location}/tweets/{tweet_id}.png")
         print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
         return {
             "url": f"{url}/static/tweets/{tweet_id}.png",
