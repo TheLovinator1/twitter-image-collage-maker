@@ -1,12 +1,9 @@
 # twitter-image-collage-maker
 
 `twitter-image-collage-maker` combines several images in tweets into one.
-It runs a website that downloads images, combines them into a 2x1, 3x1 and 2x2 and returns the new combined image. This program was made for https://github.com/TheLovinator1/discord-twitter-webhooks.
+It runs a website that downloads images from a Tweet, combines them into a 2x1, 3x1 and 2x2 and returns the new combined image. This program was made for https://github.com/TheLovinator1/discord-twitter-webhooks.
 
----
-
-### Before
-
+## Before
 
 <p float="left">
 <img alt="Before1" src="static\img\EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
@@ -15,9 +12,8 @@ It runs a website that downloads images, combines them into a 2x1, 3x1 and 2x2 a
 <img alt="Before4" src="static\img\EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
 </p>
 
----
+## After
 
-### After
 <img alt="After1" src="static\img\1197649654785069057.png" width="15%" height="15%">
 
 ---
@@ -92,68 +88,43 @@ The Discord id that should be pinged when something goes wrong. It can be found 
 
 </details>
 <details>
-<summary><b>Get twitter-image-collage-maker with <code>docker cli</code></b></summary><br/><br/>
+<summary><b>Install twitter-image-collage-maker locally on your computer behind Nginx</b></summary>
 
-```console
-docker run -d \
-  --name=twitter-image-collage-maker \
-  -e WEBHOOK_URL=https://discord.com/api/webhooks/151256151521/Drw1jBO9Xyo1hAVsvaNdI1d077dOsfsafAV-nxIDvH-XJeSIeAVavasvkM0Vu \
-  -e CONSUMER_KEY=akaopspokfpofasfsaf \
-  -e CONSUMER_SECRET=fsa0fskaopfsoapfkofskaopfskopafskopaf \
-  -e ACCESS_TOKEN=1521521515-JeASFAd0cGtASifvSSaSFmIr4kopAw8V0oyiH6jN \
-  -e ACCESS_TOKEN_SECRET=VlHAS12FYqkQdASFd5XvyunwPaS12F8zPMTZ6IZASF1No \
-  -e URL=https://twitter.lovinator.space/ \
-  -e DISABLE_IP=True \
-  -e DISCORD_ID=126462229892694018 \
-  --restart unless-stopped \
-  thelovinator/twitter-image-collage-maker
-```
-
-This bot on [Docker Hub](https://hub.docker.com/r/thelovinator/twitter-image-collage-maker).
-
-## Environment variables
-
-No space should be between the equal sign in your .env.
-
-Right click channel you want the tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL
-
-* WEBHOOK\_URL=https://discordapp.com/api/webhooks/582694/a3hmHAXItB_lzSYBx0-CeVeUDqac1vT
-
-Go to [Twitter](https://developer.twitter.com/en/portal/apps/new) and create an app. If you don't get one try to fill out as much as possible. After it is created go to Keys and tokens. CONSUMER_KEY = API key, CONSUMER_SECRET = API key secret:
-
-* CONSUMER\_KEY=ASFkopkoasfPOFkopaf
-* CONSUMER\_SECRET=ASFkopkoasfPOFkopafASFkopkoasfPOFkopafASFkopkoasfPOFkopaf
-* ACCESS\_TOKEN=1294501204821094-kKPOASPKOFpkoaskfpo
-* ACCESS\_TOKEN\_SECRET=ASKOpokfpkoaspofOPFPO2908iAKOPSFKPO
-
-Domain for website. Discord needs to access this.
-
-* URL=https://twitter.lovinator.space/
-
-Hide IP in webhook notification
-
-* DISABLE_IP=True
-
-The Discord id that should be pinged when something goes wrong. It can be found by typing \\@YourUsername in Discord.
-
-* DISCORD_ID=126462229892694018
-
-</details>
-<details>
-<summary><b>Get twitter-image-collage-maker with <code>Python</code> with <code>pip</code></b></summary>
-
-* Install latest version of Python 3 for your operating system
+These steps are work in progress. Issues and pull requests welcome. You will get the grasp of how to use it. The steps are not perfect. You can use the public version of the bot if you get stuck. Or ask be for help on Discord/Steam/GitHub.
+* Install latest version of Python 3 and nginx
 * Download project from GitHub and change directory into it
-* (Optional) Create virtual environment:
+* Create virtual environment:
   * `python -m venv .venv`
-    * Activate virtual environment:
-      * Windows:  `.\.venv\Scripts\activate`
-      * Not windows:  `source .venv/bin/activate`
+  * Activate virtual environment:
+    * `source .venv/bin/activate`
 * Install requirements
   * `pip install -r requirements.txt`
-* Rename .env.example to .env and fill it with things from [Twitter](https://developer.twitter.com). If you don't want to use the .env-file you can add variables to your environment.
-* Start the bot (inside the activated virtual environment if you made one):
-  * `python main.py`
+* Rename .env.example to .env and fill it with things from [Twitter](https://developer.twitter.com). You also have to uncomment STATIC_LOCATION and change it to the path where you want the images to be saved. We will use /static in this example.
+* Copy twitter.service and twitter.socket to /etc/systemd/system/:
+  * `sudo cp twitter.service /etc/systemd/system/`
+
+* There is a example file for nginx. Change it to your needs.
+  * `sudo cp nginx.conf /etc/nginx/`
+* Restart nginx:
+  * `sudo systemctl enable --now nginx`
+* Create directory for images:
+  * `sudo mkdir /static`
+* Check what user is running Nginx, Arch is using `http`. Others could be `www-data`:
+  * `ps aux | grep nginx`
+* Change permissions for the directory. Change lovinator to your username:
+  * `sudo chown -R lovinator:http /static`
+* Create log folder
+  * `sudo mkdir /var/log/twitter`
+* Change permissions to your user
+  * `sudo chown -R lovinator:lovinator /var/log/twitter`
+* Start the service:
+  * `sudo systemctl enable --now twitter.service`
+  * `sudo systemctl enable --now twitter.socket`
+* Check if it is running:
+  * `sudo systemctl status twitter.service`
+* Check logs if something went wrong:
+  * `cat /var/log/twitter/error.log` and `cat /var/log/twitter/access.log`
+* If everything is working you should be able to see the site in your browser
 
 ## Environment variables
 
@@ -191,7 +162,3 @@ The Discord id that should be pinged when something goes wrong. It can be found 
 * Steam: [TheLovinator](https://steamcommunity.com/id/TheLovinator/)
 * Send an issue: [twitter-image-collage-maker/issues](https://github.com/TheLovinator1/twitter-image-collage-maker/issues)
 * GitHub Discussions: [twitter-image-collage-maker/discussions](https://github.com/TheLovinator1/twitter-image-collage-maker/discussions)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
