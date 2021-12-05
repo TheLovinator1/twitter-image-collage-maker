@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "twitter-image-collage-maker"
+version = "0.1.0"
+description = "Web application that makes 2x2, 3x1 or 2x1 collages from images from Tweets. Made for https://github.com/TheLovinator1/discord-twitter-webhooks"
+authors = ["Joakim Hellsén <tlovinator@gmail.com>"]
+license = "MIT"
+homepage = "https://github.com/TheLovinator1/twitter-image-collage-maker"
+repository = "https://github.com/TheLovinator1/twitter-image-collage-maker"
+keywords = [
+    "bot",
+    "discord",
+    "twitter-image-collage-maker",
+    "twitter",
+    "tweepy",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+tweepy = "^4.4.0"
+Pillow = "^8.4.0"
+Flask = "^2.0.2"
+python-dotenv = "^0.19.2"
+dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+bandit = "^1.7.1"
+mypy = "^0.910"
+types-requests = "^2.26.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
