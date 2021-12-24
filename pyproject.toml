@@ -18,10 +18,11 @@ keywords = [
 python = "^3.9"
 tweepy = "^4.4.0"
 Pillow = "^8.4.0"
-Flask = "^2.0.2"
-python-dotenv = "^0.19.2"
 dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
 gunicorn = "^20.1.0"
+uvicorn = {extras = ["standard"], version = "^0.15.0"}
+fastapi = "^0.70.0"
+platformdirs = "^2.4.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

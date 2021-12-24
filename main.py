@@ -1,19 +1,26 @@
 import os
 import tempfile
+from pathlib import Path
 
 import requests
 import tweepy
 from dhooks import Webhook
-from dotenv import load_dotenv
-from flask import Flask, escape, render_template, request
+from fastapi import FastAPI, HTTPException
 from PIL import Image, ImageOps
+from platformdirs import user_data_dir
 
-app = Flask(__name__)
-load_dotenv(verbose=True)
+app = FastAPI(
+    docs_url="/",
+)
 
 hook = Webhook(os.environ["WEBHOOK_URL"])
 url = os.environ["URL"]
-static_location = os.getenv("STATIC_LOCATION", default="static")
+
+data_dir = user_data_dir("twitter-image-collage-maker", "TheLovinator")
+static_location = os.getenv("STATIC_LOCATION", default=data_dir)
+
+# Create folder for our images
+Path(os.path.join(static_location, "tweets")).mkdir(parents=True, exist_ok=True)
 
 # TODO: Change this to actual boolean instead of a string that is True or False lol
 hidden_ip = os.getenv("DISABLE_IP", default="True")
@@ -35,18 +42,6 @@ def link_list(tweet):
             link_list.append(link)
 
     return link_list
-
-
-def notify_discord(message: str):
-    if request.environ.get("HTTP_X_FORWARDED_FOR") is None:
-        ip = request.environ["REMOTE_ADDR"]
-    else:
-        ip = request.environ["HTTP_X_FORWARDED_FOR"]
-
-    if hidden_ip == "False":
-        hook.send(f"{ip} {message}")
-    else:
-        hook.send(f"Someone {message}")
 
 
 def download_images(tweet_id: int):
@@ -131,7 +126,7 @@ def download_images(tweet_id: int):
         }
     except Exception as e:
         print("Error: " + str(e))
-        notify_discord(
+        hook.send(
             f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
             f"<@{discord_username}>"
         )
@@ -142,39 +137,17 @@ def download_images(tweet_id: int):
             os.remove(str(image))
 
 
-@app.route("/add")
-def add():
+@app.get("/add")
+async def add(tweet_id: int = None):
     """
     The page where we add tweets that will be downloaded.
     Example: /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
 
     Returns string with URL to the image.
     """
+    if tweet_id is None:
+        raise HTTPException(status_code=404, detail="Tweet not found")
 
-    tweet_id = request.args.get("tweet_id", default=1, type=int)
-    escaped_tweet_id = escape(tweet_id)
-
-    print(f"Add: Tweet ID: {tweet_id}")
-    if tweet_id == 1:
-        return (
-            "Please add correct tweet id, e.g "
-            "https://twitter.lovinator.space/add?tweet_id=1197649654785069057"
-        )
-
-    if os.path.isfile(f"static/tweets/{escaped_tweet_id}.png"):
-        print(f"{escaped_tweet_id} is already converted.")
-        return {
-            "url": f"{url}/static/tweets/{escaped_tweet_id}.png",
-        }
-    notify_discord(f"made image for https://twitter.com/i/status/{escaped_tweet_id}")
-    return download_images(escaped_tweet_id)
-
-
-@app.route("/")
-def index():
-    """Renders /templates/index.html"""
-    return render_template("index.html")
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    if os.path.isfile(f"static/tweets/{tweet_id}.png"):
+        return {"url": f"{url}/static/tweets/{tweet_id}.png"}
+    return download_images(tweet_id)
