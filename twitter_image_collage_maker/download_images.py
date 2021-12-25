@@ -1,50 +1,14 @@
 import os
 import tempfile
-from pathlib import Path
 
 import requests
-import tweepy
-from dhooks import Webhook
-from fastapi import FastAPI, HTTPException
 from PIL import Image, ImageOps
-from platformdirs import user_data_dir
 
-app = FastAPI(
-    docs_url="/",
-)
-
-hook = Webhook(os.environ["WEBHOOK_URL"])
-url = os.environ["URL"]
-
-data_dir = user_data_dir("twitter-image-collage-maker", "TheLovinator")
-static_location = os.getenv("STATIC_LOCATION", default=data_dir)
-
-# Create folder for our images
-Path(os.path.join(static_location, "tweets")).mkdir(parents=True, exist_ok=True)
-
-# TODO: Change this to actual boolean instead of a string that is True or False lol
-hidden_ip = os.getenv("DISABLE_IP", default="True")
-discord_username = os.getenv("DISCORD_ID", default="126462229892694018")
-
-auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
-
-auth.set_access_token(os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRET"])
-
-api = tweepy.API(auth)
+from link_list import link_list
+from settings import Settings
 
 
-def link_list(tweet):
-    """Generate a list with all the images in the tweet."""
-    link_list = []
-    if "media" in tweet.entities:
-        for media in tweet.extended_entities["media"]:
-            link = media["media_url_https"]
-            link_list.append(link)
-
-    return link_list
-
-
-def download_images(tweet_id: int):
+def download_images(tweet_id: int, api, hook):
     """
     Downloads images from Twitter and makes them into one image with Pillow.
 
@@ -119,35 +83,16 @@ def download_images(tweet_id: int):
             new_im.paste(imgs[3], (512, 512))
 
         # Save our merged image
-        new_im.save(f"{static_location}/tweets/{tweet_id}.png")
+        new_im.save(f"{Settings.static_location}/tweets/{tweet_id}.png")
         print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
         return {
-            "url": f"{url}/static/tweets/{tweet_id}.png",
+            "url": f"{Settings.url}/static/tweets/{tweet_id}.png",
         }
     except Exception as e:
         print("Error: " + str(e))
-        hook.send(
-            f"errored for https://twitter.com/i/status/{tweet_id}\n{e} "
-            f"<@{discord_username}>"
-        )
+        hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} " f"<@{Settings.discord_username}>")
     finally:
         filename.close()
         for image in images:
             print(f"Removing {image}")
             os.remove(str(image))
-
-
-@app.get("/add")
-async def add(tweet_id: int = None):
-    """
-    The page where we add tweets that will be downloaded.
-    Example: /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
-
-    Returns string with URL to the image.
-    """
-    if tweet_id is None:
-        raise HTTPException(status_code=404, detail="Tweet not found")
-
-    if os.path.isfile(f"static/tweets/{tweet_id}.png"):
-        return {"url": f"{url}/static/tweets/{tweet_id}.png"}
-    return download_images(tweet_id)
