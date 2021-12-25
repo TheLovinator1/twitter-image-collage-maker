@@ -31,7 +31,7 @@ class Settings:
             config.set("config", "webhook_url", "https://discord.com/api/webhooks/1234/567890/ABCDEFGHI")
             config.set("config", "url", "https://twitter.lovinator.space/")
             config.set("config", "static_location", static_location)
-            config.set("config", "discord_username", "126462229892694018")
+            config.set("config", "discord_id", "126462229892694018")
             config.set("config", "hidden_ip", "True")
 
             config.write(config_file)
@@ -45,7 +45,7 @@ class Settings:
     webhook_url = config.get("config", "webhook_url")
     url = config.get("config", "url")
     static_location = config.get("config", "static_location")
-    discord_username = config.get("config", "discord_username")
+    discord_id = config.get("config", "discord_id")
     hidden_ip = config.get("config", "hidden_ip")
     api_key = config.get("twitter", "api_key")
     api_key_secret = config.get("twitter", "api_key_secret")

@@ -90,7 +90,7 @@ def download_images(tweet_id: int, api, hook):
         }
     except Exception as e:
         print("Error: " + str(e))
-        hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} " f"<@{Settings.discord_username}>")
+        hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} " f"<@{Settings.discord_id}>")
     finally:
         filename.close()
         for image in images:
