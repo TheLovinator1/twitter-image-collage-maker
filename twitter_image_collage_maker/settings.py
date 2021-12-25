@@ -1,25 +1,57 @@
+import configparser
 import os
-from pathlib import Path
+import sys
 
 import tweepy
-from platformdirs import user_data_dir
+from platformdirs import user_config_dir, user_data_dir
 
 
 class Settings:
-
-    webhook_url = os.environ["WEBHOOK_URL"]
-    url = os.environ["URL"]
-
-    data_dir = user_data_dir("twitter-image-collage-maker", "TheLovinator")
-    static_location = os.getenv("STATIC_LOCATION", default=data_dir)
+    static_location = user_data_dir("twitter-image-collage-maker", "TheLovinator", roaming=True)
+    config_dir = user_config_dir("twitter-image-collage-maker", "TheLovinator", roaming=True)
 
     # Create folder for our images
-    Path(os.path.join(static_location, "tweets")).mkdir(parents=True, exist_ok=True)
+    os.makedirs(os.path.join(static_location, "tweets"), exist_ok=True)
+    # Create folder for our config
+    os.makedirs(config_dir, exist_ok=True)
 
-    # TODO: Change this to actual boolean instead of a string that is True or False lol
-    hidden_ip = os.getenv("DISABLE_IP", default="True")
-    discord_username = os.getenv("DISCORD_ID", default="126462229892694018")
+    config_location = os.path.join(config_dir, "config.conf")
 
-    auth = tweepy.OAuthHandler(os.environ["CONSUMER_KEY"], os.environ["CONSUMER_SECRET"])
+    if not os.path.isfile(config_location):
+        print("No config file found, creating one...")
+        with open(config_location, "w") as config_file:
+            config = configparser.ConfigParser()
+            config.add_section("twitter")
+            config.set("twitter", "api_key", "k3mzbn1SCZ10Pi2D3kz8oX5n0")
+            config.set("twitter", "api_key_secret", "PutfRqOlvEtGQuWuci1gh8FkNZUNlw2vQhyr6sL26SchhlAPI0")
+            config.set("twitter", "access_token", "43123408-Je4YsZBd0cGiifvSS2c84mIr4kopAw8V0oyHi6jN")
+            config.set("twitter", "access_token_secret", "VlHwEQsYqkQd5XvyunwPJb0NAmNNK8zPMTZ6IZKFwmGwN0")
 
-    auth.set_access_token(os.environ["ACCESS_TOKEN"], os.environ["ACCESS_TOKEN_SECRET"])
+            config.add_section("config")
+            config.set("config", "webhook_url", "https://discord.com/api/webhooks/1234/567890/ABCDEFGHI")
+            config.set("config", "url", "https://twitter.lovinator.space/")
+            config.set("config", "static_location", static_location)
+            config.set("config", "discord_username", "126462229892694018")
+            config.set("config", "hidden_ip", "True")
+
+            config.write(config_file)
+        sys.exit(f"Please edit the config file at {config_location}")
+
+    # Read the config file
+    config = configparser.ConfigParser()
+    config.read(config_location)
+
+    # Get the configs from the config file
+    webhook_url = config.get("config", "webhook_url")
+    url = config.get("config", "url")
+    static_location = config.get("config", "static_location")
+    discord_username = config.get("config", "discord_username")
+    hidden_ip = config.get("config", "hidden_ip")
+    api_key = config.get("twitter", "api_key")
+    api_key_secret = config.get("twitter", "api_key_secret")
+    access_token = config.get("twitter", "access_token")
+    access_token_secret = config.get("twitter", "access_token_secret")
+
+    # Twitter authentication
+    auth = tweepy.OAuthHandler(api_key, api_key_secret)
+    auth.set_access_token(access_token, access_token_secret)

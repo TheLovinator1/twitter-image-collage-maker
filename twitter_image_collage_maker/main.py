@@ -3,12 +3,37 @@ import os
 import tweepy
 import uvicorn
 from dhooks import Webhook
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import JSONResponse
 
 from download_images import download_images
 from settings import Settings
 
-app = FastAPI(docs_url="/")
+description = """
+Web application that makes 2x2, 3x1 or 2x1 collages from images from Tweets.
+Made for [thelovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/discord-twitter-webhooks)
+
+Send issues to [twitter-image-collage-maker](https://github.com/TheLovinator1/twitter-image-collage-maker/issues)
+Feel free to send a pull request!
+
+I can be contacted at TheLovinator#9276 on Discord.
+"""
+
+app = FastAPI(
+    title="twitter-image-collage-maker",
+    description=description,
+    version="0.0.1",
+    contact={
+        "name": "Joakim Hellsén",
+        "url": "https://github.com/TheLovinator1/twitter-image-collage-maker/",
+        "email": "tlovinator@gmail.com",
+    },
+    license_info={
+        "name": "GPLv3",
+        "url": "https://www.gnu.org/licenses/gpl-3.0.en.html",
+    },
+    docs_url="/",
+)
 api = tweepy.API(Settings.auth)
 hook = Webhook(Settings.webhook_url)
 
@@ -26,7 +51,8 @@ async def add(tweet_id: int = None):
 
     if os.path.isfile(f"static/tweets/{tweet_id}.png"):
         return {"url": f"{Settings.url}/static/tweets/{tweet_id}.png"}
-    return download_images(tweet_id, api, hook)
+
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=download_images(tweet_id, api, hook))
 
 
 if __name__ == "__main__":
