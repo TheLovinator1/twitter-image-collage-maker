@@ -51,8 +51,8 @@ async def add(tweet_id: int = None):
 
     if os.path.isfile(f"static/tweets/{tweet_id}.png"):
         return {"url": f"{Settings.url}/static/tweets/{tweet_id}.png"}
-
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=download_images(tweet_id, api, hook))
+    returned_json = download_images(tweet_id, api)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=returned_json)
 
 
 if __name__ == "__main__":

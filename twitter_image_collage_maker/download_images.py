@@ -8,7 +8,7 @@ from link_list import link_list
 from settings import Settings
 
 
-def download_images(tweet_id: int, api, hook):
+def download_images(tweet_id: int, api):
     """
     Downloads images from Twitter and makes them into one image with Pillow.
 
@@ -44,15 +44,14 @@ def download_images(tweet_id: int, api, hook):
 
         if len(links) == 1:
             print("Found 1 link")
+            # Get better quality image
             image_url = (
                 tweet.extended_entities["media"][0]["media_url_https"]
                 .replace(".png", "?format=png&name=orig")
                 .replace(".jpg", "?format=jpg&name=orig")
-            )  # Get better quality
+            )
 
-            return {
-                "url": image_url,
-            }
+            return {"url": image_url}
 
         if len(links) == 2:
             print("Found 2 links")
@@ -90,7 +89,7 @@ def download_images(tweet_id: int, api, hook):
         }
     except Exception as e:
         print("Error: " + str(e))
-        hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} " f"<@{Settings.discord_id}>")
+        # hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} <@{Settings.discord_id}>")
     finally:
         filename.close()
         for image in images:
