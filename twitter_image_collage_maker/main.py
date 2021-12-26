@@ -39,20 +39,29 @@ hook = Webhook(Settings.webhook_url)
 
 
 @app.get("/add")
-async def add(tweet_id: int = None):
+async def add(tweet_id: int) -> JSONResponse:
     """
     The page where we add tweets that will be downloaded.
     Example: /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
 
-    Returns string with URL to the image.
+    Returns JSON with the following format: {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.png"}
     """
-    if tweet_id is None:
-        raise HTTPException(status_code=404, detail="Tweet not found")
+    try:
+        # Check if file already exists and if so, return the URL to the image
+        if os.path.isfile(f"{Settings.static_location}/tweets/{tweet_id}.png"):
+            json_content = {"url": f"{Settings.url}/static/tweets/{tweet_id}.png"}
+            hook.send(f"Already had a image for tweet https://twitter.com/i/status/{tweet_id}\n`{json_content}`")
+            return JSONResponse(status_code=status.HTTP_201_CREATED, content=json_content)
 
-    if os.path.isfile(f"static/tweets/{tweet_id}.png"):
-        return {"url": f"{Settings.url}/static/tweets/{tweet_id}.png"}
-    returned_json = download_images(tweet_id, api)
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=returned_json)
+        # Otherwise download the image and return the URL to the image
+        json_content = download_images(tweet_id, api, hook)
+        hook.send(f"Returned image for tweet https://twitter.com/i/status/{tweet_id}\n`{json_content}`")
+        return JSONResponse(status_code=status.HTTP_201_CREATED, content=json_content)
+
+    except Exception as e:
+        print("Error: " + str(e))
+        hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} <@{Settings.discord_id}>")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
 if __name__ == "__main__":
