@@ -13,7 +13,7 @@ WorkingDirectory=/home/lovinator/twitter-image-collage-maker/twitter_image_colla
 
 # You need to create /var/log/twitter and change permissions to your user. And change lovinator to your username.
 # I have no idea if 3 workers and 3 threads is the best combination. You should test what is best for you.
-ExecStart=/home/lovinator/twitter-image-collage-maker/.venv/bin/gunicorn --workers=3 --threads=3 --bind unix:/run/twitter.sock --access-logfile /var/log/twitter/access.log  --error-logfile /var/log/twitter/error.log main:app 
+ExecStart=poetry run gunicorn -k uvicorn.workers.UvicornWorker --workers=3 --threads=3 --bind unix:/run/twitter.sock --access-logfile /var/log/twitter/access.log  --error-logfile /var/log/twitter/error.log main:app 
 Restart=on-failure
 
 [Install]
