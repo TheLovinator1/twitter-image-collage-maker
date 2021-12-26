@@ -44,7 +44,7 @@ async def add(tweet_id: int) -> JSONResponse:
     The page where we add tweets that will be downloaded.
     Example: /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
 
-    Returns JSON with the following format: {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.png"}
+    Returns following format: {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.png"}
     """
     try:
         # Check if file already exists and if so, return the URL to the image
