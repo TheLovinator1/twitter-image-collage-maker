@@ -57,6 +57,10 @@ class Settings:
     access_token = config.get("twitter", "access_token")
     access_token_secret = config.get("twitter", "access_token_secret")
 
+    # We check if the URL ends with a forward slash. If it does, we remove it.
+    if url.endswith("/"):
+        url = url[:-1]
+
     # Twitter authentication
     auth = tweepy.OAuthHandler(api_key, api_key_secret)
     auth.set_access_token(access_token, access_token_secret)
