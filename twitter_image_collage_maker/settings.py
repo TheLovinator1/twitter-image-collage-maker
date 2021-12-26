@@ -1,14 +1,19 @@
 import configparser
 import os
 import sys
+from sys import platform
 
 import tweepy
-from platformdirs import user_config_dir, user_data_dir
+from platformdirs import site_data_dir, user_config_dir
 
 
 class Settings:
-    static_location = user_data_dir("twitter-image-collage-maker", "TheLovinator", roaming=True)
+    static_location = site_data_dir("twitter-image-collage-maker", "TheLovinator")
     config_dir = user_config_dir("twitter-image-collage-maker", "TheLovinator", roaming=True)
+
+    if platform == "linux":
+        # Cool guys don't use /usr/local
+        static_location = static_location.replace("/usr/local/share/", "/usr/share/")
 
     # Create folder for our images
     os.makedirs(os.path.join(static_location, "tweets"), exist_ok=True)
