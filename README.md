@@ -30,26 +30,35 @@ These steps are work in progress. Issues and pull requests welcome. You will get
 - Download project from GitHub and change directory into it
 - Install requirements
   - `poetry install`
+- Create folder for images
+  - `sudo mkdir /usr/share/twitter-image-collage-maker`
+- Check what user is running Nginx, Arch is using `http`. Others could be `www-data`
+  - `ps aux | grep nginx`
+- Change permissions
+  - `sudo chown -R $USER:http /usr/share/twitter-image-collage-maker`
+- Run the program once to get the config file
+  - `poetry run python twitter_image_collage_maker/main.py`
+- Fill in the config file. Explanation are further down in the README
+  - `nano ~/.config/twitter-image-collage-maker/config.conf`
+  - `vim ~/.config/twitter-image-collage-maker/config.conf`
 - Copy twitter.service and twitter.socket to /etc/systemd/system/
   - `sudo cp twitter.service /etc/systemd/system/`
-- There is a example file for nginx. Change it to your needs.
+- There is a example file for Nginx. Change it to your needs
   - `sudo cp nginx.conf /etc/nginx/`
 - Restart nginx:
   - `sudo systemctl enable --now nginx`
-- Check what user is running Nginx, Arch is using `http`. Others could be `www-data`:
-  - `ps aux | grep nginx`
-- Change permissions for the directory. Change lovinator to your username:
-  - `sudo chown -R lovinator:http /static`
+- Change permissions for the directory
+  - `sudo chown -R $USER:http ~/.local/share/twitter-image-collage-maker`
 - Create log folder
   - `sudo mkdir /var/log/twitter`
 - Change permissions to your user
-  - `sudo chown -R lovinator:lovinator /var/log/twitter`
-- Start the service:
+  - `sudo chown -R $USER:$USER /var/log/twitter`
+- Start the service
   - `sudo systemctl enable --now twitter.service`
   - `sudo systemctl enable --now twitter.socket`
-- Check if it is running:
+- Check if it is running
   - `sudo systemctl status twitter.service`
-- Check logs if something went wrong:
+- Check logs if something went wrong
   - `cat /var/log/twitter/error.log` and `cat /var/log/twitter/access.log`
 - If everything is working you should be able to see the site in your browser
 
