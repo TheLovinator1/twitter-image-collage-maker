@@ -38,13 +38,30 @@ api = tweepy.API(Settings.auth)
 hook = Webhook(Settings.webhook_url)
 
 
-@app.get("/add")
+@app.get(
+    "/add",
+    responses={
+        200: {
+            "description": "Return the JSON item.",
+            "content": {
+                "application/json": {
+                    "example": {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.png"},
+                }
+            },
+        }
+    },
+    summary="Make a collage from a tweet",
+)
 async def add(tweet_id: int) -> JSONResponse:
     """
-    The page where we add tweets that will be downloaded.
-    Example: /add?tweet_id=1197649654785069057 to download tweet with ID 1197649654785069057
+    Download image from tweet, and return the URL to the image.
 
-    Returns following format: {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.png"}
+    Needs:
+    - **tweet_id**: The ID of the tweet. For example: `1197649654785069057`.
+
+    This function will return a JSON object with the URL to the image.
+
+    URL example: `https://twitter.lovinator.space/add?tweet_id=1197649654785069057`
     """
     try:
         # Check if file already exists and if so, return the URL to the image
