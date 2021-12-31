@@ -42,9 +42,9 @@ These steps are work in progress. Issues and pull requests welcome. You will get
   - `nano ~/.config/twitter-image-collage-maker/config.conf`
   - `vim ~/.config/twitter-image-collage-maker/config.conf`
 - Copy twitter.service and twitter.socket to /etc/systemd/system/
-  - `sudo cp twitter.service /etc/systemd/system/`
+  - `sudo cp extras/twitter.service /etc/systemd/system/`
 - There is a example file for Nginx. Change it to your needs
-  - `sudo cp nginx.conf /etc/nginx/`
+  - `sudo cp extras/nginx.conf /etc/nginx/`
 - Restart nginx:
   - `sudo systemctl enable --now nginx`
 - Change permissions for the directory
@@ -64,30 +64,16 @@ These steps are work in progress. Issues and pull requests welcome. You will get
 
 ## Config file
 
-Right click channel you want the tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL
-
-- webhook_url = https://discordapp.com/api/webhooks/582694/a3hmHAXItB_lzSYBx0-CeVeUDqac1vT
-
-Go to [Twitter](https://developer.twitter.com/en/portal/apps/new) and create an app.
-
-- api_key = ASFkopkoasfPOFkopaf
-- api_key_secret = ASFkopkoasfPOFkopafASFkopkoasfPOFkopafASFkopkoasfPOFkopaf
-- access_token = 1294501204821094-kKPOASPKOFpkoaskfpo
-- access_token_secret = ASKOpokfpkoaspofOPFPO2908iAKOPSFKPO
-
-Domain for website. Discord needs to access this. Return image will look like `https://twitter.lovinator.space/static/tweets/1197649654785069057.png`
-
-- url = https://twitter.lovinator.space/
-
-Hide IP in webhook notification
-
-- hidden_ip = True
-
-The Discord id that should be pinged when something goes wrong. It can be found by typing \\@YourUsername in Discord.
-
-- discord_id = 126462229892694018
-
-</details>
+| Config              | Description                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| webhook_url         | Right click channel you want tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL.                                                 |
+| api_key             | Go to [Twitter](https://developer.twitter.com/en/portal/apps/new) and create an app.                                                                   |
+| api_key_secret      | Same as above.                                                                                                                                         |
+| access_token        | Same as above.                                                                                                                                         |
+| access_token_secret | Same as above.                                                                                                                                         |
+| url                 | Domain for website. Discord needs to access this. Return image will look like `https://twitter.lovinator.space/static/tweets/1197649654785069057.png`. |
+| discord_id          | User that should be pinged when something goes wrong.                                                                                                  |
+| static_location     | Path to folder where images are stored. Defaults to C:\ProgramData\ on Windows and /usr/share on Linux.                                                |
 
 ## Need help?
 
