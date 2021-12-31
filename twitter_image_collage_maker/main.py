@@ -77,7 +77,7 @@ async def add(tweet_id: int) -> JSONResponse:
 
     except Exception as e:
         print("Error: " + str(e))
-        hook.send(f"Got exception for https://twitter.com/i/status/{tweet_id}\n{e} <@{Settings.discord_id}>")
+        hook.send(f"<@{Settings.discord_id}> Got exception for https://twitter.com/i/status/{tweet_id}\n{e}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
