@@ -20,15 +20,16 @@ tweepy = "^4.4.0"
 Pillow = "^8.4.0"
 dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
 gunicorn = "^20.1.0"
-uvicorn = {extras = ["standard"], version = "^0.15.0"}
-fastapi = "^0.70.0"
-platformdirs = "^2.4.0"
+uvicorn = {extras = ["standard"], version = "^0.16.0"}
+fastapi = "^0.70.1"
+platformdirs = "^2.4.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
 bandit = "^1.7.1"
-mypy = "^0.910"
-types-requests = "^2.26.1"
+mypy = "^0.930"
+types-requests = "^2.26.3"
+black = {version = "^21.12b0", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
