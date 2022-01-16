@@ -1,3 +1,4 @@
+import os
 import tempfile
 
 import requests
@@ -40,7 +41,7 @@ def download_images(tweet_id: int, api, hook):
                 images.append(str(filename.name))
 
     if len(links) == 1:
-        print("Found 1 link")
+        print("Found 1 image, returning that instead of creating our own")
         # Get better quality image
         image_url = (
             tweet.extended_entities["media"][0]["media_url_https"]
@@ -51,7 +52,7 @@ def download_images(tweet_id: int, api, hook):
         return {"url": image_url}
 
     if len(links) == 2:
-        print("Found 2 links")
+        print("Found 2 images")
         imgs = list(map(Image.open, (images[0], images[1])))
         new_im = Image.new("RGB", (1024, 512))
 
@@ -60,7 +61,7 @@ def download_images(tweet_id: int, api, hook):
             x_offset += img.size[0]
 
     if len(links) == 3:
-        print("Found 3 links")
+        print("Found 3 images")
         imgs = list(map(Image.open, (images[0], images[1], images[2])))
         new_im = Image.new("RGB", (1536, 512))
 
@@ -69,7 +70,7 @@ def download_images(tweet_id: int, api, hook):
             x_offset += img.size[0]
 
     if len(links) == 4:
-        print("Found 4 links")
+        print("Found 4 images")
         imgs = list(map(Image.open, (images[0], images[1], images[2], images[3])))
         new_im = Image.new("RGB", (1024, 1024))
 
@@ -81,6 +82,12 @@ def download_images(tweet_id: int, api, hook):
     # Save our merged image
     new_im.save(f"{Settings.static_location}/tweets/{tweet_id}.webp", format="WebP")
     print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
+
+    # Remove the temp files
+    for image in images:
+        print(f"Removing {image}")
+        os.remove(image)
+
     return {
         "url": f"{Settings.url}/static/tweets/{tweet_id}.webp",
     }
