@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "twitter-image-collage-maker"
-version = "0.1.0"
+version = "0.2.0"
 description = "Web application that makes 2x2, 3x1 or 2x1 collages from images from Tweets. Made for https://github.com/TheLovinator1/discord-twitter-webhooks"
 authors = ["Joakim Hellsén <tlovinator@gmail.com>"]
 license = "GPL-3.0-or-later"
