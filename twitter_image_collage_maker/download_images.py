@@ -79,8 +79,8 @@ def download_images(tweet_id: int, api, hook):
         new_im.paste(imgs[3], (512, 512))
 
     # Save our merged image
-    new_im.save(f"{Settings.static_location}/tweets/{tweet_id}.png")
+    new_im.save(f"{Settings.static_location}/tweets/{tweet_id}.webp", format="WebP")
     print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
     return {
-        "url": f"{Settings.url}/static/tweets/{tweet_id}.png",
+        "url": f"{Settings.url}/static/tweets/{tweet_id}.webp",
     }

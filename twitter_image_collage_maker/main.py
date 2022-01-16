@@ -45,7 +45,7 @@ hook = Webhook(Settings.webhook_url)
             "description": "Return the JSON item.",
             "content": {
                 "application/json": {
-                    "example": {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.png"},
+                    "example": {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.jpg"},
                 }
             },
         }
@@ -67,6 +67,10 @@ async def add(tweet_id: int) -> JSONResponse:
         # Check if file already exists and if so, return the URL to the image
         if os.path.isfile(f"{Settings.static_location}/tweets/{tweet_id}.png"):
             json_content = {"url": f"{Settings.url}/static/tweets/{tweet_id}.png"}
+            hook.send(f"Already had a image for tweet https://twitter.com/i/status/{tweet_id}\n`{json_content}`")
+            return JSONResponse(status_code=status.HTTP_200_OK, content=json_content)
+        elif os.path.isfile(f"{Settings.static_location}/tweets/{tweet_id}.webp"):
+            json_content = {"url": f"{Settings.url}/static/tweets/{tweet_id}.webp"}
             hook.send(f"Already had a image for tweet https://twitter.com/i/status/{tweet_id}\n`{json_content}`")
             return JSONResponse(status_code=status.HTTP_200_OK, content=json_content)
 
