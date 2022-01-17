@@ -45,7 +45,7 @@ hook = Webhook(Settings.webhook_url)
             "description": "Return the JSON item.",
             "content": {
                 "application/json": {
-                    "example": {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.jpg"},
+                    "example": {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.webp"},
                 }
             },
         }
