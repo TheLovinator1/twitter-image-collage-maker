@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Now removes images from temp when done.
 - Use WebP instead of PNG when saving files to minimize file size.
 - Updated dependencies (1 install, 6 updates, 0 removals).
   - Updating charset-normalizer (2.0.9 -> 2.0.10)
