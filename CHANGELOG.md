@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Now removes images from temp when done.
 - Use WebP instead of PNG when saving files to minimize file size.
-- Updated dependencies (1 install, 6 updates, 0 removals).
+- Updated dependencies (1 install, 12 updates, 0 removals).
   - Updating charset-normalizer (2.0.9 -> 2.0.10)
   - Updating urllib3 (1.26.7 -> 1.26.8)
   - Updating anyio (3.4.0 -> 3.5.0)
@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updating uvicorn (0.16.0 -> 0.17.0)
   - Updating starlette (0.16.0 -> 0.17.1)
   - Updating fastapi (0.70.1 -> 0.71.0)
+  - Updating frozenlist (1.2.0 -> 1.3.0)
+  - Updating h11 (0.12.0 -> 0.13.0)
 - Updated developer dependencies (0 installs, 1 update, 0 removals)
   - Updating mypy (0.930 -> 0.931)
 
