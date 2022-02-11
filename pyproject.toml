@@ -26,7 +26,7 @@ platformdirs = "^2.4.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
-bandit = "^1.7.1"
+bandit = "^1.7.2"
 mypy = "^0.931"
 types-requests = "^2.27.7"
 black = {version = "^21.12b0", allow-prereleases = true}
