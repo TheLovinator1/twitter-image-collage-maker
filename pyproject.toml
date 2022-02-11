@@ -22,7 +22,7 @@ dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
 gunicorn = "^20.1.0"
 uvicorn = {extras = ["standard"], version = "^0.17.0"}
 fastapi = "^0.71.0"
-platformdirs = "^2.4.1"
+platformdirs = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
