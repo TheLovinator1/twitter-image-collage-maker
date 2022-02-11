@@ -178,7 +178,7 @@ resolved_reference = "cdd5f3f3bc109cbbc06f16a1cd9d39ed9d75a94e"
 
 [[package]]
 name = "fastapi"
-version = "0.71.0"
+version = "0.73.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 category = "main"
 optional = false
@@ -625,7 +625,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4fc65abffce1ceeeaa63774ffaa37c32c5cb17eb2877a76fc9fbe5533f040f4b"
+content-hash = "cc9c64807fcb00b47f58d0075e0896bb89bf1065689e4bb1f14560b32fcc662c"
 
 [metadata.files]
 aiohttp = [
@@ -748,8 +748,8 @@ colorama = [
 ]
 dhooks = []
 fastapi = [
-    {file = "fastapi-0.71.0-py3-none-any.whl", hash = "sha256:a78eca6b084de9667f2d5f37e2ae297270e5a119cd01c2f04815795da92fc87f"},
-    {file = "fastapi-0.71.0.tar.gz", hash = "sha256:2b5ac0ae89c80b40d1dd4b2ea0bb1f78d7c4affd3644d080bf050f084759fff2"},
+    {file = "fastapi-0.73.0-py3-none-any.whl", hash = "sha256:f0a618aff5f6942862f2d3f20f39b1c037e33314d1b8207fd1c3a2cca76dfd8c"},
+    {file = "fastapi-0.73.0.tar.gz", hash = "sha256:dcfee92a7f9a72b5d4b7ca364bd2b009f8fc10d95ed5769be20e94f39f7e5a15"},
 ]
 flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d"},
