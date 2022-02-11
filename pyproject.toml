@@ -16,20 +16,20 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-tweepy = "^4.4.0"
-Pillow = "^9.0.0"
+tweepy = "^4.5.0"
+Pillow = "^9.0.1"
 dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
 gunicorn = "^20.1.0"
-uvicorn = {extras = ["standard"], version = "^0.17.0"}
-fastapi = "^0.71.0"
-platformdirs = "^2.4.1"
+uvicorn = {extras = ["standard"], version = "^0.17.4"}
+fastapi = "^0.73.0"
+platformdirs = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
-bandit = "^1.7.1"
+bandit = "^1.7.2"
 mypy = "^0.931"
-types-requests = "^2.27.7"
-black = {version = "^21.12b0", allow-prereleases = true}
+types-requests = "^2.27.9"
+black = "^22.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
