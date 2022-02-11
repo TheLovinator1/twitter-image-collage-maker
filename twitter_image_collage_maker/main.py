@@ -3,10 +3,9 @@ import os
 import tweepy
 import uvicorn
 from dhooks import Webhook
+from download_images import download_images
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
-
-from download_images import download_images
 from settings import Settings
 
 description = """
