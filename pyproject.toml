@@ -16,7 +16,7 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-tweepy = "^4.5.0"
+tweepy = "^4.6.0"
 Pillow = "^9.0.1"
 dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
 gunicorn = "^20.1.0"
