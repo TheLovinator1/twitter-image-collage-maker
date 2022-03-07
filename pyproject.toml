@@ -21,7 +21,7 @@ Pillow = "^9.0.1"
 dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
 gunicorn = "^20.1.0"
 uvicorn = {extras = ["standard"], version = "^0.17.5"}
-fastapi = "^0.74.1"
+fastapi = "^0.75.0"
 platformdirs = "^2.5.1"
 
 [tool.poetry.dev-dependencies]
