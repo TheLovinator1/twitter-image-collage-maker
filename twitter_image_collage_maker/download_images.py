@@ -2,9 +2,10 @@ import os
 import tempfile
 
 import requests
-from link_list import link_list
 from PIL import Image, ImageOps
-from settings import Settings
+
+from twitter_image_collage_maker import settings
+from twitter_image_collage_maker.link_list import link_list
 
 
 def download_images(tweet_id: int, api, hook):
@@ -95,7 +96,7 @@ def download_images(tweet_id: int, api, hook):
 
     # Save our merged image
     new_im.save(
-        f"{Settings.static_location}/tweets/{tweet_id}.webp",
+        f"{settings.static_location}/tweets/{tweet_id}.webp",
         format="WebP",
     )
     print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
@@ -106,5 +107,5 @@ def download_images(tweet_id: int, api, hook):
         os.remove(image)
 
     return {
-        "url": f"{Settings.url}/static/tweets/{tweet_id}.webp",
+        "url": f"{settings.url}/static/tweets/{tweet_id}.webp",
     }

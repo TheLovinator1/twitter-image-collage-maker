@@ -1,12 +1,12 @@
 import os
 
 import tweepy
-import uvicorn
 from dhooks import Webhook
-from download_images import download_images
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
-from settings import Settings
+
+from twitter_image_collage_maker import settings
+from twitter_image_collage_maker.download_images import download_images
 
 description = """
 Web application that makes 2x2, 3x1 or 2x1 collages from images from Tweets.
@@ -35,8 +35,8 @@ app = FastAPI(
     },
     docs_url="/",
 )
-api = tweepy.API(Settings.auth)
-hook = Webhook(Settings.webhook_url)
+api = tweepy.API(settings.auth)
+hook = Webhook(settings.webhook_url)
 
 
 @app.get(
@@ -68,9 +68,9 @@ async def add(tweet_id: int):
     """
     try:
         # Check if file already exists and if so, return the URL to the image
-        if os.path.isfile(f"{Settings.static_location}/tweets/{tweet_id}.png"):
+        if os.path.isfile(f"{settings.static_location}/tweets/{tweet_id}.png"):
             json_content = {
-                "url": f"{Settings.url}/static/tweets/{tweet_id}.png",
+                "url": f"{settings.url}/static/tweets/{tweet_id}.png",
             }
             hook.send(
                 f"Already had a image for tweet "
@@ -82,10 +82,10 @@ async def add(tweet_id: int):
                 content=json_content,
             )
         elif os.path.isfile(
-            f"{Settings.static_location}/tweets/{tweet_id}.webp",
+            f"{settings.static_location}/tweets/{tweet_id}.webp",
         ):
             json_content = {
-                "url": f"{Settings.url}/static/tweets/{tweet_id}.webp",
+                "url": f"{settings.url}/static/tweets/{tweet_id}.webp",
             }
             hook.send(
                 "Already had a image for tweet "
@@ -112,11 +112,7 @@ async def add(tweet_id: int):
     except Exception as e:
         print(f"Error: {str(e)}")
         hook.send(
-            f"<@{Settings.discord_id}> Got exception for "
+            f"<@{settings.discord_id}> Got exception for "
             f"https://twitter.com/i/status/{tweet_id}\n"
             f"{e}"
         )
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
