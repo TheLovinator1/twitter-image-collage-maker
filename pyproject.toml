@@ -19,10 +19,9 @@ python = "^3.9"
 tweepy = "^4.7.0"
 Pillow = "^9.0.1"
 dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
-gunicorn = "^20.1.0"
-uvicorn = {extras = ["standard"], version = "^0.17.6"}
 fastapi = "^0.75.0"
 platformdirs = "^2.5.1"
+python-dotenv = "^0.19.2"
 
 [tool.poetry.dev-dependencies]
 
