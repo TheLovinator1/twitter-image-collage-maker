@@ -2,9 +2,8 @@ import os
 import tempfile
 
 import requests
-from PIL import Image, ImageOps
-
 from link_list import link_list
+from PIL import Image, ImageOps
 from settings import Settings
 
 
@@ -19,20 +18,25 @@ def download_images(tweet_id: int, api, hook):
     """
     images = []
     tweet = api.get_status(tweet_id, tweet_mode="extended")
-    links = link_list(tweet)  # Generates a list with all the images in the tweet.
+    links = link_list(tweet)
     x_offset = 0
 
     for link in links:
         with tempfile.SpooledTemporaryFile() as tmp:
-            print("Trying to download " + link)
+            print(f"Trying to download {link}")
             response = requests.get(link)
             tmp.write(response.content)
 
             # Crop to 512 by 512 pixels
             thumb = ImageOps.fit(Image.open(tmp), (512, 512), Image.ANTIALIAS)
 
-            # Create temp file to store the cropped image, we remove it manually later
-            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as filename:
+            # Create temp file to store the cropped image
+            # We remove it manually later
+            with tempfile.NamedTemporaryFile(
+                suffix=".png",
+                delete=False,
+            ) as filename:
+
                 # Save the crop
                 thumb.save(filename)
                 print(f"Saved {filename.name} ({link})")
@@ -71,7 +75,17 @@ def download_images(tweet_id: int, api, hook):
 
     if len(links) == 4:
         print("Found 4 images")
-        imgs = list(map(Image.open, (images[0], images[1], images[2], images[3])))
+        imgs = list(
+            map(
+                Image.open,
+                (
+                    images[0],
+                    images[1],
+                    images[2],
+                    images[3],
+                ),
+            )
+        )
         new_im = Image.new("RGB", (1024, 1024))
 
         new_im.paste(imgs[0], (0, 0))
@@ -80,7 +94,10 @@ def download_images(tweet_id: int, api, hook):
         new_im.paste(imgs[3], (512, 512))
 
     # Save our merged image
-    new_im.save(f"{Settings.static_location}/tweets/{tweet_id}.webp", format="WebP")
+    new_im.save(
+        f"{Settings.static_location}/tweets/{tweet_id}.webp",
+        format="WebP",
+    )
     print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
 
     # Remove the temp files
