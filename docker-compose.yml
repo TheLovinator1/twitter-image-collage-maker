@@ -1,0 +1,23 @@
+services:
+  twitter-image-collage-maker:
+    # image: thelovinator/twitter-image-collage-maker
+    build: .
+    env_file:
+      - .env
+    container_name: twitter-image-collage-maker
+    environment:
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - URL=${URL}
+      - STATIC_LOCATION=${STATIC_LOCATION}
+      - DISCORD_ID=${DISCORD_ID}
+      - API_KEY=${API_KEY}
+      - API_KEY_SECRET=${API_KEY_SECRET}
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+    ports:
+      - "5000:5000"
+    volumes:
+      - tweet_images:/usr/share/twitter-image-collage-maker/
+    restart: unless-stopped
+volumes:
+  tweet_images:
