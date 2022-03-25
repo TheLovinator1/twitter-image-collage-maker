@@ -14,7 +14,7 @@ It runs a website that downloads images from a Tweet, combines them into a 2x1, 
 
 ## After
 
-<img alt="After1" src="extras\img\1197649654785069057.jpg" width="15%" height="15%">
+<img alt="After1" src="img\1197649654785069057.jpg" width="15%" height="15%">
 
 ---
 
