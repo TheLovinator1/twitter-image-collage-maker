@@ -6,10 +6,10 @@ It runs a website that downloads images from a Tweet, combines them into a 2x1, 
 ## Before
 
 <p float="left">
-<img alt="Before1" src="extras\img\EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
-<img alt="Before2" src="extras\img\EJ7n4pfU4AARDwj.jpg" width="15%" height="15%">
-<img alt="Before3" src="extras\img\EJ7n4pfVUAA9kHQ.jpg" width="15%" height="15%">
-<img alt="Before4" src="extras\img\EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
+<img alt="Before1" src="img\EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
+<img alt="Before2" src="img\EJ7n4pfU4AARDwj.jpg" width="15%" height="15%">
+<img alt="Before3" src="img\EJ7n4pfVUAA9kHQ.jpg" width="15%" height="15%">
+<img alt="Before4" src="img\EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
 </p>
 
 ## After
@@ -21,46 +21,6 @@ It runs a website that downloads images from a Tweet, combines them into a 2x1, 
 ## Public version
 
 [https://twitter.lovinator.space/](https://twitter.lovinator.space/)
-
-## Installation
-
-These steps are work in progress. Issues and pull requests welcome. You will get the grasp of how to use it. The steps are not perfect. You can use the public version of the bot if you get stuck. Or ask be for help on Discord/Steam/GitHub.
-
-- Install latest version of Python 3, Poetry and Nginx
-- Download project from GitHub and change directory into it
-- Install requirements
-  - `poetry install`
-- Create folder for images
-  - `sudo mkdir /usr/share/twitter-image-collage-maker`
-- Check what user is running Nginx, Arch is using `http`. Others could be `www-data`
-  - `ps aux | grep nginx`
-- Change permissions
-  - `sudo chown -R $USER:http /usr/share/twitter-image-collage-maker`
-- Run the program once to get the config file
-  - `poetry run python twitter_image_collage_maker/main.py`
-- Fill in the config file. Explanation are further down in the README
-  - `nano ~/.config/twitter-image-collage-maker/config.conf`
-  - `vim ~/.config/twitter-image-collage-maker/config.conf`
-- Copy twitter.service and twitter.socket to /etc/systemd/system/
-  - `sudo cp extras/twitter.service /etc/systemd/system/`
-- There is a example file for Nginx. Change it to your needs
-  - `sudo cp extras/nginx.conf /etc/nginx/`
-- Restart nginx:
-  - `sudo systemctl enable --now nginx`
-- Change permissions for the directory
-  - `sudo chown -R $USER:http ~/.local/share/twitter-image-collage-maker`
-- Create log folder
-  - `sudo mkdir /var/log/twitter`
-- Change permissions to your user
-  - `sudo chown -R $USER:$USER /var/log/twitter`
-- Start the service
-  - `sudo systemctl enable --now twitter.service`
-  - `sudo systemctl enable --now twitter.socket`
-- Check if it is running
-  - `sudo systemctl status twitter.service`
-- Check logs if something went wrong
-  - `cat /var/log/twitter/error.log` and `cat /var/log/twitter/access.log`
-- If everything is working you should be able to see the site in your browser
 
 ## Config file
 
