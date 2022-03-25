@@ -1,7 +1,6 @@
 services:
   twitter-image-collage-maker:
-    # image: thelovinator/twitter-image-collage-maker
-    build: .
+    image: ghcr.io/thelovinator1/twitter-image-collage-maker:master
     env_file:
       - .env
     container_name: twitter-image-collage-maker
