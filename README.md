@@ -24,13 +24,15 @@ It runs a website that downloads images from a Tweet, combines them into a 2x1, 
 
 ## Config file
 
+Go to [Twitter Developer Portal](https://developer.twitter.com/en/portal/dashboard) and apply for Elevated API access to get the V1 API keys. After you have applied you can go to Projects & Apps -> Create App under Standalone Apps
+
 | Config              | Description                                                                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | webhook_url         | Right click channel you want tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL.                                                 |
-| api_key             | Go to [Twitter](https://developer.twitter.com/en/portal/apps/new) and create an app.                                                                   |
-| api_key_secret      | Same as above.                                                                                                                                         |
-| access_token        | Same as above.                                                                                                                                         |
-| access_token_secret | Same as above.                                                                                                                                         |
+| api_key             | Twitter API key.                                                                                                                                       |
+| api_key_secret      | Twitter API Secret Key.                                                                                                                                |
+| access_token        | Twitter Access Token.                                                                                                                                  |
+| access_token_secret | Twitter Access Token Secret.                                                                                                                           |
 | url                 | Domain for website. Discord needs to access this. Return image will look like `https://twitter.lovinator.space/static/tweets/1197649654785069057.png`. |
 | discord_id          | User that should be pinged when something goes wrong.                                                                                                  |
 | static_location     | Path to folder where images are stored. Defaults to C:\ProgramData\ on Windows and /usr/share on Linux.                                                |
