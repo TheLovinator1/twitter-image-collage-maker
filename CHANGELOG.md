@@ -5,28 +5,26 @@ All notable changes to twitter-image-collage-maker will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.0] - 2022-03-26
 
 ### Added
 
+- Add container image to GitHub Container Registry in docker-compose.yml
+- Remove Nginx files.
+- Docker image is now built automatically.
+- Add .env.example
+- Add Dockerfile and docker-compose.yml
+- Add python-dotenv to dependencies.
+- Remove gunicorn and uvicorn from dependencies.
+- Remove class from settings.py
+- Reformat imports
+- Delete DependaBot and use Renovate instead.
+- Remove developer dependencies to reduce the amount of dependencies.
+- Analyze code with CodeQL each commit.
+- Use Black profile for isort.
 - Now removes images from temp when done.
 - Use WebP instead of PNG when saving files to minimize file size.
-- Updated dependencies (1 install, 12 updates, 0 removals).
-  - Updating charset-normalizer (2.0.9 -> 2.0.10)
-  - Updating urllib3 (1.26.7 -> 1.26.8)
-  - Updating anyio (3.4.0 -> 3.5.0)
-  - Updating requests (2.26.0 -> 2.27.1)
-  - Updating gitpython (3.1.24 -> 3.1.26)
-  - Installing types-urllib3 (1.26.7)
-  - Updating types-requests (2.26.3 -> 2.27.7)
-  - Updating pillow (8.4.0 -> 9.0.0)
-  - Updating uvicorn (0.16.0 -> 0.17.0)
-  - Updating starlette (0.16.0 -> 0.17.1)
-  - Updating fastapi (0.70.1 -> 0.71.0)
-  - Updating frozenlist (1.2.0 -> 1.3.0)
-  - Updating h11 (0.12.0 -> 0.13.0)
-- Updated developer dependencies (0 installs, 1 update, 0 removals)
-  - Updating mypy (0.930 -> 0.931)
+- Updated dependencies.
 
 ## [0.2.0] - 2022-01-16
 
