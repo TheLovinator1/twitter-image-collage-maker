@@ -67,42 +67,34 @@ async def add(tweet_id: int):
     Example: `https://twitter.lovinator.space/add?tweet_id=1197649654785069057`
     """
     try:
-        # Check if file already exists and if so, return the URL to the image
-        if os.path.isfile(f"{settings.static_location}/tweets/{tweet_id}.png"):
-            json_content = {
-                "url": f"{settings.url}/static/tweets/{tweet_id}.png",
-            }
+        # Check if file already exists and if so, return the URL to the
+        # image
+        file_name = f"{settings.static_location}/tweets/{tweet_id}"
+
+        if os.path.isfile(f"{file_name}.png"):
+            file_type = "png"
+        elif os.path.isfile(f"{file_name}.webp"):
+            file_type = "webp"
+        else:
+            json_content = download_images(tweet_id, api)
             hook.send(
-                f"Already had a image for tweet "
+                "Returned image for tweet "
                 f"https://twitter.com/i/status/{tweet_id}\n"
-                f"`{json_content}`"
-            )
-            return JSONResponse(
-                status_code=status.HTTP_200_OK,
-                content=json_content,
-            )
-        elif os.path.isfile(
-            f"{settings.static_location}/tweets/{tweet_id}.webp",
-        ):
-            json_content = {
-                "url": f"{settings.url}/static/tweets/{tweet_id}.webp",
-            }
-            hook.send(
-                "Already had a image for tweet "
-                f"https://twitter.com/i/status/{tweet_id}\n"
-                f"`{json_content}`"
+                f"{json_content}"
             )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content=json_content,
             )
 
-        # Otherwise download the image and return the URL to the image
-        json_content = download_images(tweet_id, api, hook)
+        json_content = {
+            "url": f"{settings.url}/static/tweets/{tweet_id}.{file_type}",
+        }
+
         hook.send(
-            "Returned image for tweet "
+            f"Already had a image for tweet "
             f"https://twitter.com/i/status/{tweet_id}\n"
-            f"`{json_content}`"
+            f"{json_content}"
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
