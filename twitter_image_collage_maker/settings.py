@@ -36,7 +36,7 @@ config_location = os.path.join(config_dir, "config.conf")
 
 if not os.path.isfile(config_location):
     print("No config file found, creating one...")
-    with open(config_location, "w") as config_file:
+    with open(config_location, "w", encoding="utf8") as config_file:
         config = configparser.ConfigParser()
         config.add_section("twitter")
         config.set("twitter", "api_key", "k3mzbn1SCZ10Pi2D3kz8oX5n0")
