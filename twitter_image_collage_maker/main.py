@@ -47,7 +47,7 @@ hook = Webhook(settings.webhook_url)
             "content": {
                 "application/json": {
                     "example": {
-                        "url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.webp"  # noqa: E501
+                        "url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.webp"  # noqa: E501, pylint: disable=line-too-long
                     },
                 }
             },
