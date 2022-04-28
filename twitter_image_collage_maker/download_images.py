@@ -8,7 +8,7 @@ from twitter_image_collage_maker import settings
 from twitter_image_collage_maker.link_list import link_list
 
 
-def download_images(tweet_id: int, api, hook):
+def download_images(tweet_id: int, api):
     """
     Downloads images from Twitter and makes them into one image with Pillow.
 
@@ -106,6 +106,4 @@ def download_images(tweet_id: int, api, hook):
         print(f"Removing {image}")
         os.remove(image)
 
-    return {
-        "url": f"{settings.url}/static/tweets/{tweet_id}.webp",
-    }
+    return {"url": f"{settings.url}/static/tweets/{tweet_id}.webp"}

@@ -29,6 +29,7 @@ if platform == "linux":
 
 # Create folder for our images
 os.makedirs(os.path.join(static_location, "tweets"), exist_ok=True)
+
 # Create folder for our config
 os.makedirs(config_dir, exist_ok=True)
 
