@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from twitter_image_collage_maker import settings
 from twitter_image_collage_maker.download_images import download_images
 
-description = """
+DESCRIPTION = """
 Web application that makes 2x2, 3x1 or 2x1 collages from images from Tweets.
 Made for
 [thelovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/discord-twitter-webhooks)
@@ -22,7 +22,7 @@ I can be contacted at TheLovinator#9276 on Discord.
 
 app = FastAPI(
     title="twitter-image-collage-maker",
-    description=description,
+    description=DESCRIPTION,
     version="0.0.1",
     contact={
         "name": "Joakim Hellsén",
