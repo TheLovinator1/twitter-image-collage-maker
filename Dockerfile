@@ -14,7 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Update packages and install needed packages to build our requirements.
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc curl git ffmpeg python-is-python3
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc curl ffmpeg python-is-python3
 
 # Create user so we don't run as root.
 RUN useradd --create-home botuser
@@ -42,8 +42,7 @@ ADD --chown=botuser:botuser pyproject.toml poetry.lock README.md LICENSE /home/b
 WORKDIR /home/botuser/twitter-image-collage-maker
 
 # Install the requirements.
-RUN poetry install --no-interaction --no-ansi --no-dev && \
-poetry add uvicorn[standard]
+RUN poetry install --no-interaction --no-ansi --no-dev
 
 # Add main.py and settings.py to the container.
 ADD --chown=botuser:botuser twitter_image_collage_maker /home/botuser/twitter-image-collage-maker/twitter_image_collage_maker/

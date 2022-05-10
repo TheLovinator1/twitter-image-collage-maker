@@ -18,12 +18,11 @@ keywords = [
 python = "^3.9"
 tweepy = "^4.7.0"
 Pillow = "^9.0.1"
-dhooks = { git = "https://github.com/kyb3r/dhooks.git" }
+discord-webhook = "^0.15.0"
 fastapi = "^0.75.0"
 platformdirs = "^2.5.1"
 python-dotenv = "^0.20.0"
-
-[tool.poetry.dev-dependencies]
+uvicorn = { extras = ["standard"], version = "^0.17.6" }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
