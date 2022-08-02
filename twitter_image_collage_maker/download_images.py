@@ -34,10 +34,9 @@ def download_images(tweet_id: int, api):
             # Create temp file to store the cropped image
             # We remove it manually later
             with tempfile.NamedTemporaryFile(
-                suffix=".png",
-                delete=False,
+                    suffix=".png",
+                    delete=False,
             ) as filename:
-
                 # Save the crop
                 thumb.save(filename)
                 print(f"Saved {filename.name} ({link})")

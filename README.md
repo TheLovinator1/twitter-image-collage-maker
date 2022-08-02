@@ -1,7 +1,9 @@
 # twitter-image-collage-maker
 
 `twitter-image-collage-maker` combines several images in tweets into one.
-It runs a website that downloads images from a Tweet, combines them into a 2x1, 3x1 and 2x2 and returns the new combined image. This program was made for [TheLovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/discord-twitter-webhooks).
+It runs a website that downloads images from a Tweet, combines them into a 2x1, 3x1 and 2x2 and returns the new combined
+image. This program was made
+for [TheLovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/discord-twitter-webhooks).
 
 ## Before
 
@@ -24,7 +26,8 @@ It runs a website that downloads images from a Tweet, combines them into a 2x1, 
 
 ## Config file
 
-Go to [Twitter Developer Portal](https://developer.twitter.com/en/portal/dashboard) and apply for Elevated API access to get the V1 API keys. After you have applied you can go to Projects & Apps -> Create App under Standalone Apps
+Go to [Twitter Developer Portal](https://developer.twitter.com/en/portal/dashboard) and apply for Elevated API access to
+get the V1 API keys. After you have applied you can go to Projects & Apps -> Create App under Standalone Apps
 
 | Config              | Description                                                                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -42,5 +45,7 @@ Go to [Twitter Developer Portal](https://developer.twitter.com/en/portal/dashboa
 - Email: [tlovinator@gmail.com](mailto:tlovinator@gmail.com)
 - Discord: TheLovinator#9276
 - Steam: [TheLovinator](https://steamcommunity.com/id/TheLovinator/)
-- Send an issue: [twitter-image-collage-maker/issues](https://github.com/TheLovinator1/twitter-image-collage-maker/issues)
-- GitHub Discussions: [twitter-image-collage-maker/discussions](https://github.com/TheLovinator1/twitter-image-collage-maker/discussions)
+- Send an
+  issue: [twitter-image-collage-maker/issues](https://github.com/TheLovinator1/twitter-image-collage-maker/issues)
+- GitHub
+  Discussions: [twitter-image-collage-maker/discussions](https://github.com/TheLovinator1/twitter-image-collage-maker/discussions)

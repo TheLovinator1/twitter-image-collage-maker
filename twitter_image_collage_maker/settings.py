@@ -1,11 +1,11 @@
 import configparser
 import os
-import sys
-from sys import platform
 
+import sys
 import tweepy
 from dotenv import load_dotenv
 from platformdirs import site_data_dir, user_config_dir
+from sys import platform
 
 load_dotenv(verbose=True, dotenv_path="../.env")
 
