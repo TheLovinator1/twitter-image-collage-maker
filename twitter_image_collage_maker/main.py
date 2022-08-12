@@ -35,7 +35,7 @@ app = FastAPI(
     },
     docs_url="/",
 )
-api = tweepy.API(settings.auth)
+client = tweepy.Client(bearer_token=settings.bearer_token, wait_on_rate_limit=True)
 
 
 @app.get(
@@ -66,7 +66,7 @@ async def add(tweet_id: int):
     Example: `https://twitter.lovinator.space/add?tweet_id=1197649654785069057`
     """
 
-    # Check if file already exists and if so, return the URL to the image
+    # Check if file already exists and if so, return the URL to the image.
     file_name = f"{settings.static_location}/tweets/{tweet_id}"
 
     if os.path.isfile(f"{file_name}.png"):
@@ -74,11 +74,10 @@ async def add(tweet_id: int):
     elif os.path.isfile(f"{file_name}.webp"):
         file_type = "webp"
     else:
-        json_content = download_images(tweet_id, api)
+        json_content = download_images(tweet_id, client)
         send_webhook(
             "Returned image for tweet "
             f"https://twitter.com/i/status/{tweet_id}\n"
-            f"{json_content}"
         )
         return JSONResponse(
             status_code=status.HTTP_200_OK,
@@ -92,6 +91,5 @@ async def add(tweet_id: int):
     send_webhook(
         f"Already had a image for tweet "
         f"https://twitter.com/i/status/{tweet_id}\n"
-        f"{json_content}"
     )
     return JSONResponse(status_code=status.HTTP_200_OK, content=json_content)

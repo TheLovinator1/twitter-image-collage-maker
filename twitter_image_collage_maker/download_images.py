@@ -6,10 +6,9 @@ import tweepy
 from PIL import Image, ImageOps
 
 from twitter_image_collage_maker import settings
-from twitter_image_collage_maker.link_list import link_list
 
 
-def download_images(tweet_id: int, api: tweepy.API) -> dict:
+def download_images(tweet_id: int, api: tweepy.Client) -> dict:
     """
     Downloads images from Twitter and makes them into one image with Pillow.
 
@@ -22,8 +21,16 @@ def download_images(tweet_id: int, api: tweepy.API) -> dict:
 
     """
     images = []
-    tweet = api.get_status(tweet_id, tweet_mode="extended")
-    links = link_list(tweet)
+    links = []
+    tweet = api.get_tweet(id=tweet_id, expansions=["attachments.media_keys"], media_fields=["url"])
+
+    if tweet.includes:
+        includes = tweet.includes
+    if "media" in includes:
+        media_list: list[dict] = [media.data for media in tweet.includes["media"]]
+        for image in media_list:
+            links.append(image["url"])
+
     x_offset = 0
 
     for link in links:
@@ -50,14 +57,7 @@ def download_images(tweet_id: int, api: tweepy.API) -> dict:
 
     if len(links) == 1:
         print("Found 1 image, returning that instead of creating our own")
-        # Get better quality image
-        image_url = (
-            tweet.extended_entities["media"][0]["media_url_https"]
-            .replace(".png", "?format=png&name=orig")
-            .replace(".jpg", "?format=jpg&name=orig")
-        )
-
-        return {"url": image_url}
+        return {"url": image['url']}
 
     if len(links) == 2:
         print("Found 2 images")

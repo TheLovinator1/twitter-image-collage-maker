@@ -26,19 +26,15 @@ for [TheLovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/di
 
 ## Config file
 
-Go to [Twitter Developer Portal](https://developer.twitter.com/en/portal/dashboard) and apply for Elevated API access to
-get the V1 API keys. After you have applied you can go to Projects & Apps -> Create App under Standalone Apps
+Create an app and copy your bearer token.
 
-| Config              | Description                                                                                                                                            |
-|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| webhook_url         | Right click channel you want tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL.                                                 |
-| api_key             | Twitter API key.                                                                                                                                       |
-| api_key_secret      | Twitter API Secret Key.                                                                                                                                |
-| access_token        | Twitter Access Token.                                                                                                                                  |
-| access_token_secret | Twitter Access Token Secret.                                                                                                                           |
-| url                 | Domain for website. Discord needs to access this. Return image will look like `https://twitter.lovinator.space/static/tweets/1197649654785069057.png`. |
-| discord_id          | User that should be pinged when something goes wrong.                                                                                                  |
-| static_location     | Path to folder where images are stored. Defaults to C:\ProgramData\ on Windows and /usr/share on Linux.                                                |
+| Config          | Description                                                                                                                                                 |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| WEBHOOK_URL     | Right click channel you want tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL.                                                      |
+| BEARER_TOKEN    | https://developer.twitter.com/en/portal/ - Fill out your information and accept the developer agreement & policy, create an app and copy your bearer token. |
+| URL             | Domain for website. Discord needs to access this.                                                                                                           |
+| DISCORD_ID      | User that should be pinged when something goes wrong.                                                                                                       |
+| STATIC_LOCATION | Path to folder where images are stored. Docker users should use `/usr/share/twitter-image-collage-maker/`                                                   |
 
 ## Need help?
 
