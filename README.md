@@ -8,15 +8,15 @@ for [TheLovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/di
 ## Before
 
 <p float="left">
-<img alt="Before1" src="img\EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
-<img alt="Before2" src="img\EJ7n4pfU4AARDwj.jpg" width="15%" height="15%">
-<img alt="Before3" src="img\EJ7n4pfVUAA9kHQ.jpg" width="15%" height="15%">
-<img alt="Before4" src="img\EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
+<img alt="Before1" src="img/EJ7n4pfU0AE6gUg.jpg" width="15%" height="15%">
+<img alt="Before2" src="img/EJ7n4pfU4AARDwj.jpg" width="15%" height="15%">
+<img alt="Before3" src="img/EJ7n4pfVUAA9kHQ.jpg" width="15%" height="15%">
+<img alt="Before4" src="img/EJ7n4pfVUAEJskS.jpg" width="15%" height="15%">
 </p>
 
 ## After
 
-<img alt="After1" src="img\1197649654785069057.jpg" width="15%" height="15%">
+<img alt="After1" src="img/1197649654785069057.jpg" width="15%" height="15%">
 
 ---
 
@@ -30,7 +30,7 @@ Go to [Twitter Developer Portal](https://developer.twitter.com/en/portal/dashboa
 get the V1 API keys. After you have applied you can go to Projects & Apps -> Create App under Standalone Apps
 
 | Config              | Description                                                                                                                                            |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | webhook_url         | Right click channel you want tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL.                                                 |
 | api_key             | Twitter API key.                                                                                                                                       |
 | api_key_secret      | Twitter API Secret Key.                                                                                                                                |
@@ -44,7 +44,6 @@ get the V1 API keys. After you have applied you can go to Projects & Apps -> Cre
 
 - Email: [tlovinator@gmail.com](mailto:tlovinator@gmail.com)
 - Discord: TheLovinator#9276
-- Steam: [TheLovinator](https://steamcommunity.com/id/TheLovinator/)
 - Send an
   issue: [twitter-image-collage-maker/issues](https://github.com/TheLovinator1/twitter-image-collage-maker/issues)
 - GitHub
