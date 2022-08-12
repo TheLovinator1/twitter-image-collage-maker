@@ -47,7 +47,6 @@ api = tweepy.API(settings.auth)
                 "application/json": {
                     "example": {
                         "url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.webp"
-                        # noqa: E501, pylint: disable=line-too-long
                     },
                 }
             },
@@ -67,8 +66,7 @@ async def add(tweet_id: int):
     Example: `https://twitter.lovinator.space/add?tweet_id=1197649654785069057`
     """
 
-    # Check if file already exists and if so, return the URL to the
-    # image
+    # Check if file already exists and if so, return the URL to the image
     file_name = f"{settings.static_location}/tweets/{tweet_id}"
 
     if os.path.isfile(f"{file_name}.png"):

@@ -5,6 +5,7 @@ from twitter_image_collage_maker import settings
 
 def send_webhook(message: str) -> None:
     """Send a message to Discord.
+    
     Args:
         message (str): Message to send to Discord.
     """

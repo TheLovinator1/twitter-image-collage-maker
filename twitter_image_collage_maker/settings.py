@@ -1,11 +1,11 @@
 import configparser
 import os
-
 import sys
+from sys import platform
+
 import tweepy
 from dotenv import load_dotenv
 from platformdirs import site_data_dir, user_config_dir
-from sys import platform
 
 load_dotenv(verbose=True, dotenv_path="../.env")
 
@@ -27,10 +27,10 @@ if platform == "linux":
         "/usr/share/",
     )
 
-# Create folder for our images
+# Create the directory for our images
 os.makedirs(os.path.join(static_location, "tweets"), exist_ok=True)
 
-# Create folder for our config
+# Create the directory for our config
 os.makedirs(config_dir, exist_ok=True)
 
 config_location = os.path.join(config_dir, "config.conf")

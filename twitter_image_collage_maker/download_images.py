@@ -2,20 +2,24 @@ import os
 import tempfile
 
 import requests
+import tweepy
 from PIL import Image, ImageOps
 
 from twitter_image_collage_maker import settings
 from twitter_image_collage_maker.link_list import link_list
 
 
-def download_images(tweet_id: int, api):
+def download_images(tweet_id: int, api: tweepy.API) -> dict:
     """
     Downloads images from Twitter and makes them into one image with Pillow.
 
-    tweet_id is snowflake ID for tweet.
+    Args:
+        tweet_id: The ID of the tweet to download images from.
+        api: The Tweepy API object. This is used to download the tweet.
 
-    Returns json with url for our created image. If tweet only has one image we
-    send that instead of creating our own.
+    Returns:
+        Json with url for our created image, if tweet only has one image we send that instead of creating our own.
+
     """
     images = []
     tweet = api.get_status(tweet_id, tweet_mode="extended")
@@ -32,7 +36,7 @@ def download_images(tweet_id: int, api):
             thumb = ImageOps.fit(Image.open(tmp), (512, 512), Image.ANTIALIAS)
 
             # Create temp file to store the cropped image
-            # We remove it manually later
+            # We remove it manually later.
             with tempfile.NamedTemporaryFile(
                     suffix=".png",
                     delete=False,
@@ -41,7 +45,7 @@ def download_images(tweet_id: int, api):
                 thumb.save(filename)
                 print(f"Saved {filename.name} ({link})")
 
-                # Add the path to list so we can combine them later
+                # Add the path to list, so we can combine them later.
                 images.append(str(filename.name))
 
     if len(links) == 1:
