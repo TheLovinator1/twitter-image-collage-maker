@@ -7,7 +7,6 @@ load_dotenv(verbose=True)
 webhook_url = os.getenv("WEBHOOK_URL")
 url = os.getenv("URL")
 static_location = os.getenv("STATIC_LOCATION")
-discord_id = os.getenv("DISCORD_ID")
 bearer_token = os.getenv("BEARER_TOKEN")
 
 if not webhook_url:
@@ -16,8 +15,6 @@ if not url:
     raise ValueError("URL is not set")
 if not static_location:
     raise ValueError("STATIC_LOCATION is not set")
-if not discord_id:
-    raise ValueError("DISCORD_ID is not set")
 if not bearer_token:
     raise ValueError("BEARER_TOKEN is not set")
 
