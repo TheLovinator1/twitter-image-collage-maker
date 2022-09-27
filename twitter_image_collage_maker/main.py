@@ -89,7 +89,6 @@ async def add(tweet_id: int):
     }
 
     send_webhook(
-        f"Already had a image for tweet "
-        f"https://twitter.com/i/status/{tweet_id}\n"
+        f"Already had a image for tweet https://twitter.com/i/status/{tweet_id}\n"
     )
     return JSONResponse(status_code=status.HTTP_200_OK, content=json_content)

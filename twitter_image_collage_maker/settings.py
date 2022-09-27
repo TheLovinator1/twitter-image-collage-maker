@@ -1,5 +1,4 @@
 import os
-from sys import platform
 
 from dotenv import load_dotenv
 
