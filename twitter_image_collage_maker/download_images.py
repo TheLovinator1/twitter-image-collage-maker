@@ -40,7 +40,7 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict:
             tmp.write(response.content)
 
             # Crop to 512 by 512 pixels
-            thumb = ImageOps.fit(Image.open(tmp), (512, 512), Image.ANTIALIAS)
+            thumb = ImageOps.fit(Image.open(tmp), (512, 512))
 
             # Create temp file to store the cropped image
             # We remove it manually later.
