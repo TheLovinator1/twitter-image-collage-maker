@@ -10,6 +10,9 @@ on:
   workflow_dispatch:
 env:
   BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+  WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+  URL: https://twitter.lovinator.space/
+  STATIC_LOCATION: /Uploads
 jobs:
   build:
     runs-on: ubuntu-latest
