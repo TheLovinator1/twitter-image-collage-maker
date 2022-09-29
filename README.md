@@ -42,5 +42,3 @@ Create an app and copy your bearer token.
 - Discord: TheLovinator#9276
 - Send an
   issue: [twitter-image-collage-maker/issues](https://github.com/TheLovinator1/twitter-image-collage-maker/issues)
-- GitHub
-  Discussions: [twitter-image-collage-maker/discussions](https://github.com/TheLovinator1/twitter-image-collage-maker/discussions)
