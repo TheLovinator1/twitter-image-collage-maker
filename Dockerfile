@@ -21,8 +21,8 @@ RUN useradd --create-home botuser
 
 # Make image directory
 RUN \
-mkdir -p /usr/share/twitter-image-collage-maker && chown -R botuser:botuser /usr/share/twitter-image-collage-maker && \
-mkdir /Uploads && chown -R botuser:botuser /Uploads
+    mkdir -p /usr/share/twitter-image-collage-maker && chown -R botuser:botuser /usr/share/twitter-image-collage-maker && \
+    mkdir /Uploads && chown -R botuser:botuser /Uploads
 
 VOLUME ["/usr/share/twitter-image-collage-maker/"]
 
@@ -42,7 +42,7 @@ ADD --chown=botuser:botuser pyproject.toml poetry.lock README.md LICENSE /home/b
 WORKDIR /home/botuser/twitter-image-collage-maker
 
 # Install the requirements.
-RUN poetry install --no-interaction --no-ansi --no-dev
+RUN poetry install --no-interaction --no-ansi --only main
 
 # Add main.py and settings.py to the container.
 ADD --chown=botuser:botuser twitter_image_collage_maker /home/botuser/twitter-image-collage-maker/twitter_image_collage_maker/
