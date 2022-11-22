@@ -18,7 +18,7 @@ keywords = [
 python = "^3.9"
 tweepy = "^4.12.1"
 pillow = "^9.3.0"
-discord-webhook = "^0.17.0"
+discord-webhook = "^1.0.0"
 fastapi = "^0.87.0"
 python-dotenv = "^0.21.0"
 uvicorn = { extras = ["standard"], version = "^0.20.0" }
