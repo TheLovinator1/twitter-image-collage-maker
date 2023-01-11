@@ -40,14 +40,11 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
             tmp.write(response.content)
 
             # Crop to 512 by 512 pixels
-            thumb = ImageOps.fit(Image.open(tmp), (512, 512))
+            thumb: Image.Image = ImageOps.fit(Image.open(tmp), (512, 512))
 
             # Create temp file to store the cropped image
             # We remove it manually later.
-            with tempfile.NamedTemporaryFile(
-                suffix=".png",
-                delete=False,
-            ) as filename:
+            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as filename:
                 # Save the crop
                 thumb.save(filename)
                 print(f"Saved {filename.name} ({link})")
@@ -60,48 +57,16 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
         return {"url": image["url"]}
 
     if len(links) == 2:
-        print("Found 2 images")
-        imgs = list(map(Image.open, (images[0], images[1])))
-        new_im = Image.new("RGB", (1024, 512))
-
-        for img in imgs:
-            new_im.paste(img, (x_offset, 0))
-            x_offset += img.size[0]
+        new_im: Image.Image = two_images(images, x_offset)
 
     if len(links) == 3:
-        print("Found 3 images")
-        imgs = list(map(Image.open, (images[0], images[1], images[2])))
-        new_im = Image.new("RGB", (1536, 512))
-
-        for img in imgs:
-            new_im.paste(img, (x_offset, 0))
-            x_offset += img.size[0]
+        new_im: Image.Image = three_images(images, x_offset)
 
     if len(links) == 4:
-        print("Found 4 images")
-        imgs = list(
-            map(
-                Image.open,
-                (
-                    images[0],
-                    images[1],
-                    images[2],
-                    images[3],
-                ),
-            )
-        )
-        new_im = Image.new("RGB", (1024, 1024))
-
-        new_im.paste(imgs[0], (0, 0))
-        new_im.paste(imgs[1], (512, 0))
-        new_im.paste(imgs[2], (0, 512))
-        new_im.paste(imgs[3], (512, 512))
+        new_im: Image.Image = four_images(images)
 
     # Save our merged image
-    new_im.save(
-        f"{settings.static_location}/tweets/{tweet_id}.webp",
-        format="WebP",
-    )
+    new_im.save(f"{settings.static_location}/tweets/{tweet_id}.webp", format="WebP")
     print(f"Saved merged image for https://twitter.com/i/status/{tweet_id}")
 
     # Remove the temp files
@@ -110,3 +75,47 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
         os.remove(image)
 
     return {"url": f"{settings.url}/static/tweets/{tweet_id}.webp"}
+
+
+def two_images(images, x_offset) -> Image:
+    print("Found 2 images")
+    imgs: list[Image.Image] = list(map(Image.open, (images[0], images[1])))
+    new_im: Image.Image = Image.new("RGB", (1024, 512))
+
+    for img in imgs:
+        new_im.paste(img, (x_offset, 0))
+        x_offset += img.size[0]
+    return new_im
+
+
+def three_images(images, x_offset) -> Image.Image:
+    print("Found 3 images")
+    imgs: list[Image.Image] = list(map(Image.open, (images[0], images[1], images[2])))
+    new_im: Image.Image = Image.new("RGB", (1536, 512))
+
+    for img in imgs:
+        new_im.paste(img, (x_offset, 0))
+        x_offset += img.size[0]
+    return new_im
+
+
+def four_images(images) -> Image.Image:
+    print("Found 4 images")
+    imgs: list[Image.Image] = list(
+        map(
+            Image.open,
+            (
+                images[0],
+                images[1],
+                images[2],
+                images[3],
+            ),
+        )
+    )
+    new_im: Image.Image = Image.new("RGB", (1024, 1024))
+
+    new_im.paste(imgs[0], (0, 0))
+    new_im.paste(imgs[1], (512, 0))
+    new_im.paste(imgs[2], (0, 512))
+    new_im.paste(imgs[3], (512, 512))
+    return new_im
