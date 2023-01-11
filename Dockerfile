@@ -48,4 +48,4 @@ RUN poetry install --no-interaction --no-ansi --only main
 ADD --chown=botuser:botuser twitter_image_collage_maker /home/botuser/twitter-image-collage-maker/twitter_image_collage_maker/
 EXPOSE 5000
 
-CMD ["poetry", "run", "uvicorn", "twitter_image_collage_maker.main:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["poetry", "run", "uvicorn", "twitter_image_collage_maker.main:app", "--host", "0.0.0.0", "--port", "5000", '--forwarded-allow-ips="*"']
