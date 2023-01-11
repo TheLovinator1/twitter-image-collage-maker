@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv(verbose=True)
 
-webhook_url = os.getenv("WEBHOOK_URL")
-url = os.getenv("URL")
-static_location = os.getenv("STATIC_LOCATION")
-bearer_token = os.getenv("BEARER_TOKEN")
+webhook_url: str | None = os.getenv("WEBHOOK_URL")
+url: str | None = os.getenv("URL")
+static_location: str | None = os.getenv("STATIC_LOCATION")
+bearer_token: str | None = os.getenv("BEARER_TOKEN")
 
 if not webhook_url:
     raise ValueError("WEBHOOK_URL is not set")

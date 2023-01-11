@@ -8,7 +8,7 @@ from PIL import Image, ImageOps
 from twitter_image_collage_maker import settings
 
 
-def download_images(tweet_id: int, api: tweepy.Client) -> dict:
+def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
     """
     Downloads images from Twitter and makes them into one image with Pillow.
 
@@ -20,8 +20,8 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict:
         Json with url for our created image, if tweet only has one image we send that instead of creating our own.
 
     """
-    images = []
-    links = []
+    images: list = []
+    links: list = []
     tweet = api.get_tweet(id=tweet_id, expansions=["attachments.media_keys"], media_fields=["url"])
 
     if tweet.includes:
@@ -31,12 +31,12 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict:
         for image in media_list:
             links.append(image["url"])
 
-    x_offset = 0
+    x_offset: int = 0
 
     for link in links:
         with tempfile.SpooledTemporaryFile() as tmp:
             print(f"Trying to download {link}")
-            response = requests.get(link)
+            response: requests.Response = requests.get(link)
             tmp.write(response.content)
 
             # Crop to 512 by 512 pixels
@@ -45,8 +45,8 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict:
             # Create temp file to store the cropped image
             # We remove it manually later.
             with tempfile.NamedTemporaryFile(
-                    suffix=".png",
-                    delete=False,
+                suffix=".png",
+                delete=False,
             ) as filename:
                 # Save the crop
                 thumb.save(filename)
@@ -57,7 +57,7 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict:
 
     if len(links) == 1:
         print("Found 1 image, returning that instead of creating our own")
-        return {"url": image['url']}
+        return {"url": image["url"]}
 
     if len(links) == 2:
         print("Found 2 images")

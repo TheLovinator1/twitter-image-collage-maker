@@ -20,7 +20,7 @@ Feel free to send a pull request!
 I can be contacted at TheLovinator#9276 on Discord.
 """
 
-app = FastAPI(
+app: FastAPI = FastAPI(
     title="twitter-image-collage-maker",
     description=DESCRIPTION,
     version="0.0.1",
@@ -35,7 +35,7 @@ app = FastAPI(
     },
     docs_url="/",
 )
-client = tweepy.Client(bearer_token=settings.bearer_token, wait_on_rate_limit=True)
+client: tweepy.Client = tweepy.Client(bearer_token=settings.bearer_token, wait_on_rate_limit=True)
 
 
 @app.get(
@@ -45,9 +45,7 @@ client = tweepy.Client(bearer_token=settings.bearer_token, wait_on_rate_limit=Tr
             "description": "Return the JSON item.",
             "content": {
                 "application/json": {
-                    "example": {
-                        "url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.webp"
-                    },
+                    "example": {"url": "https://twitter.lovinator.space/static/tweets/1197649654785069057.webp"},
                 }
             },
         }
@@ -67,28 +65,23 @@ async def add(tweet_id: int):
     """
 
     # Check if file already exists and if so, return the URL to the image.
-    file_name = f"{settings.static_location}/tweets/{tweet_id}"
+    file_name: str = f"{settings.static_location}/tweets/{tweet_id}"
 
     if os.path.isfile(f"{file_name}.png"):
-        file_type = "png"
+        file_type: str = "png"
     elif os.path.isfile(f"{file_name}.webp"):
-        file_type = "webp"
+        file_type: str = "webp"
     else:
-        json_content = download_images(tweet_id, client)
-        send_webhook(
-            "Returned image for tweet "
-            f"https://twitter.com/i/status/{tweet_id}\n"
-        )
+        json_content: dict[str, str] = download_images(tweet_id, client)
+        send_webhook("Returned image for tweet " f"https://twitter.com/i/status/{tweet_id}\n")
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content=json_content,
         )
 
-    json_content = {
+    json_content: dict[str, str] = {
         "url": f"{settings.url}/static/tweets/{tweet_id}.{file_type}",
     }
 
-    send_webhook(
-        f"Already had a image for tweet https://twitter.com/i/status/{tweet_id}\n"
-    )
+    send_webhook(f"Already had a image for tweet https://twitter.com/i/status/{tweet_id}\n")
     return JSONResponse(status_code=status.HTTP_200_OK, content=json_content)
