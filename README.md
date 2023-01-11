@@ -31,7 +31,7 @@ Create an app and copy your bearer token.
 | Config          | Description                                                                                                                                                 |
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | WEBHOOK_URL     | Right click channel you want tweets in -> Integrations -> Webhooks -> New Webhook -> Copy Webhook URL.                                                      |
-| BEARER_TOKEN    | https://developer.twitter.com/en/portal/ - Fill out your information and accept the developer agreement & policy, create an app and copy your bearer token. |
+| BEARER_TOKEN    | <https://developer.twitter.com/en/portal/> - Fill out your information and accept the developer agreement & policy, create an app and copy your bearer token. |
 | URL             | Domain for website. Discord needs to access this.                                                                                                           |
 | DISCORD_ID      | User that should be pinged when something goes wrong.                                                                                                       |
 | STATIC_LOCATION | Path to folder where images are stored. Docker users should use `/usr/share/twitter-image-collage-maker/`                                                   |
