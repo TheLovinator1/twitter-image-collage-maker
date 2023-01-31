@@ -15,7 +15,7 @@ keywords = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 tweepy = "^4.12.1"
 pillow = "^9.4.0"
 discord-webhook = "^1.0.0"
