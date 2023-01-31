@@ -1,9 +1,11 @@
 import os
 import tempfile
+from typing import List
 
 import requests
 import tweepy
 from PIL import Image, ImageOps
+from tweepy.client import Response
 
 from twitter_image_collage_maker import settings
 
@@ -22,14 +24,16 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
     """
     images: list = []
     links: list = []
-    tweet = api.get_tweet(id=tweet_id, expansions=["attachments.media_keys"], media_fields=["url"])
+    tweet: Response = api.get_tweet(id=tweet_id, expansions=["attachments.media_keys"], media_fields=["url"])  # type: ignore
 
+    includes: List[str] = []
     if tweet.includes:
         includes = tweet.includes
-    if "media" in includes:
-        media_list: list[dict] = [media.data for media in tweet.includes["media"]]
-        for image in media_list:
-            links.append(image["url"])
+    if includes:
+        if tweet[1]["media"]:
+            media_list: list[dict] = [media.data for media in tweet.includes["media"]]
+            for image in media_list:
+                links.append(image["url"])
 
     x_offset: int = 0
 
@@ -54,16 +58,16 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
 
     if len(links) == 1:
         print("Found 1 image, returning that instead of creating our own")
-        return {"url": image["url"]}
-
-    if len(links) == 2:
+        return {"url": links[0]}
+    elif len(links) == 2:
         new_im: Image.Image = two_images(images, x_offset)
-
-    if len(links) == 3:
+    elif len(links) == 3:
         new_im: Image.Image = three_images(images, x_offset)
-
-    if len(links) == 4:
+    elif len(links) == 4:
         new_im: Image.Image = four_images(images)
+    else:
+        print(f"Something went wrong, got {len(links)} links for https://twitter.com/i/status/{tweet_id}")
+        return {"url": links[0]}
 
     # Save our merged image
     new_im.save(f"{settings.static_location}/tweets/{tweet_id}.webp", format="WebP")
@@ -77,7 +81,7 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
     return {"url": f"{settings.url}/static/tweets/{tweet_id}.webp"}
 
 
-def two_images(images, x_offset) -> Image:
+def two_images(images, x_offset) -> Image.Image:
     print("Found 2 images")
     imgs: list[Image.Image] = list(map(Image.open, (images[0], images[1])))
     new_im: Image.Image = Image.new("RGB", (1024, 512))
