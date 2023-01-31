@@ -20,12 +20,12 @@ tweepy = "^4.12.1"
 pillow = "^9.4.0"
 discord-webhook = "^1.0.0"
 fastapi = "^0.89.1"
-python-dotenv = "^0.21.0"
+python-dotenv = "^0.21.1"
 uvicorn = { extras = ["standard"], version = "^0.20.0" }
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.1.3"
-httpx = "^0.23.0"
+pytest = "^7.2.1"
+httpx = "^0.23.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
