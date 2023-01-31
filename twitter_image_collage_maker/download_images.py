@@ -1,6 +1,5 @@
 import os
 import tempfile
-from typing import List
 
 import requests
 import tweepy
@@ -24,17 +23,12 @@ def download_images(tweet_id: int, api: tweepy.Client) -> dict[str, str]:
     """
     images: list = []
     links: list = []
-    tweet: Response = api.get_tweet(id=tweet_id, expansions=["attachments.media_keys"], media_fields=["url"])  # type: ignore
+    tweet: Response = api.get_tweet(id=tweet_id, expansions=["attachments.media_keys"], media_fields=["url"])  # noqa: E501 # type: ignore
 
-    includes: List[str] = []
-    if tweet.includes:
-        includes = tweet.includes
-    if includes:
-        if tweet[1]["media"]:
-            media_list: list[dict] = [media.data for media in tweet.includes["media"]]
-            for image in media_list:
-                links.append(image["url"])
-
+    includes = tweet.includes or []
+    if includes and tweet[1]["media"]:
+        media_list: list[dict] = [media.data for media in tweet.includes["media"]]
+        links.extend(image["url"] for image in media_list)
     x_offset: int = 0
 
     for link in links:
