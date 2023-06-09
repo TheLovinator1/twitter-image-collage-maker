@@ -1,4 +1,8 @@
-# twitter-image-collage-maker
+# This project has been archived and is no longer maintained.
+
+The Twitter API is dead now after Elon Musk bought Twitter. So this project is now broken and will not be fixed. Thanks for the fish. 🐟
+
+## twitter-image-collage-maker
 
 `twitter-image-collage-maker` combines several images in tweets into one.
 It runs a website that downloads images from a Tweet, combines them into a 2x1, 3x1 and 2x2 and returns the new combined
@@ -18,11 +22,6 @@ for [TheLovinator1/discord-twitter-webhooks](https://github.com/TheLovinator1/di
 
 <img alt="After1" src="img/1197649654785069057.jpg" width="15%" height="15%">
 
----
-
-## Public version
-
-[https://twitter.lovinator.space/](https://twitter.lovinator.space/)
 
 ## Config file
 
